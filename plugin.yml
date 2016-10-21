@@ -1,0 +1,8 @@
+name: IOBattleStats
+main: com.interordi.iobattlestats.IOBattleStats
+version: 1.0
+
+commands:
+  givehead:
+    description: Get the head of a specific player.
+    usage: /givehead [player_name]
