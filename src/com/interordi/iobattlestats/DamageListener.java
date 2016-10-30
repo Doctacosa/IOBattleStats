@@ -60,16 +60,22 @@ public class DamageListener implements Listener {
 		Entity attacker = event.getDamager();
 		Entity target = event.getEntity();
 		String damageSource = event.getCause().toString();
+		String weaponName = "";
 		
 		//Damage source, if known
-		if (playerSource)
+		if (playerSource) {
 			damageSource = ((Player)attacker).getItemInHand().getType().toString();
+			weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
+		}
 		
 		if (damageSource.equals("Arrow")) {
 			//TODO: Find arrow's owner
 		}
+		
+		if (weaponName == null)
+			weaponName = "";
 
-		this.plugin.data.recordDamage(attacker.getName(), target.getName(), damage, damageSource, playerSource, playerTarget);
+		this.plugin.data.recordDamage(attacker.getName(), target.getName(), damage, damageSource, weaponName, playerSource, playerTarget);
 	}
 	
 	
@@ -88,7 +94,7 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		
 		//this.plugin.getServer().broadcastMessage("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
-		this.plugin.data.recordDamage("BLOCK", target.getName(), damage, event.getCause().toString(), false, true);
+		this.plugin.data.recordDamage("BLOCK", target.getName(), damage, event.getCause().toString(), "", false, true);
 	}
 	
 	
@@ -107,6 +113,6 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		
 		//this.plugin.getServer().broadcastMessage("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
-		this.plugin.data.recordDamage("OTHER", target.getName(), damage, event.getCause().toString(), false, true);
+		this.plugin.data.recordDamage("OTHER", target.getName(), damage, event.getCause().toString(), "", false, true);
 	}
 }

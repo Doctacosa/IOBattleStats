@@ -1,6 +1,6 @@
 package com.interordi.iobattlestats;
 
-import org.bukkit.entity.EntityType;
+//import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,8 +29,10 @@ public class DeathListener implements Listener {
 		//getName() -> target = Chicken / DrCossack / Zombo.com
 		//getCustomName() = null / Zombo.com
 		
+		/*
 		EntityType entity = event.getEntityType();
 		this.plugin.getServer().broadcastMessage("Entity death to " + entity + " - " + event.getEntity().getName());
+		*/
 		
 		if (event.getEntity().getLastDamageCause() == null)
 			return;
@@ -53,8 +55,8 @@ public class DeathListener implements Listener {
 		Player killer = event.getEntity().getKiller();
 		Player killed = event.getEntity().getPlayer();
 		
-		System.out.println("Killer: " + killer.getDisplayName());
-		System.out.println("Killed: " + event.getEntity().getPlayer().getDisplayName());
+		//System.out.println("Killer: " + killer.getDisplayName());
+		//System.out.println("Killed: " + event.getEntity().getPlayer().getDisplayName());
 		
 		if (killer != null) {
 			ItemStack head = Heads.getCustomSkull(killed.getDisplayName());
@@ -65,6 +67,12 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 		}
+		
+		String cause = event.getEntity().getLastDamageCause().getCause().toString();
+		//String customName = event.getEntity().getCustomName();
+		String customName = killer.getItemInHand().getItemMeta().getDisplayName();
+		
+		this.plugin.data.recordDeath(killer.getDisplayName(), killed.getDisplayName(), cause, customName, true, true);
 	}
 	
 }
