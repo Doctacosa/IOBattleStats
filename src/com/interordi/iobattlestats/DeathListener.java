@@ -54,6 +54,7 @@ public class DeathListener implements Listener {
 		
 		Player killer = event.getEntity().getKiller();
 		Player killed = event.getEntity().getPlayer();
+		String itemName = "";
 		
 		//System.out.println("Killer: " + killer.getDisplayName());
 		//System.out.println("Killed: " + event.getEntity().getPlayer().getDisplayName());
@@ -66,13 +67,15 @@ public class DeathListener implements Listener {
 			
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
+			
+			if (killer.getItemInHand() != null)
+				itemName = killer.getItemInHand().getItemMeta().getDisplayName();
 		}
 		
 		String cause = event.getEntity().getLastDamageCause().getCause().toString();
 		//String customName = event.getEntity().getCustomName();
-		String customName = killer.getItemInHand().getItemMeta().getDisplayName();
 		
-		this.plugin.data.recordDeath(killer.getDisplayName(), killed.getDisplayName(), cause, customName, true, true);
+		this.plugin.data.recordDeath(killer.getDisplayName(), killed.getDisplayName(), cause, itemName, true, true);
 	}
 	
 }
