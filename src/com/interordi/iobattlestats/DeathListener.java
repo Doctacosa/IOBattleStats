@@ -1,9 +1,13 @@
 package com.interordi.iobattlestats;
 
 //import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -23,7 +27,6 @@ public class DeathListener implements Listener {
 	
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		//TODO: Do something here
 		
 		//entity = PLAYER / CHICKEN
 		//getName() -> target = Chicken / DrCossack / Zombo.com
@@ -38,12 +41,36 @@ public class DeathListener implements Listener {
 			return;
 		
 		if (event.getEntity() instanceof Player) {
-			Player p = (Player)event.getEntity(); 
+			//Ignore PvP kills, handled by the method below
+			
+			/*
+			Player p = (Player)event.getEntity();
+			
+			System.out.println("--- It might have been a player!");
 			
 			@SuppressWarnings("unused")
 			EntityDamageEvent entityDamageCause = p.getLastDamageCause();
+			*/
+			
 		} else {
 			
+			Player killer = event.getEntity().getKiller();
+			LivingEntity killed = event.getEntity();
+			
+			if (killer != null) {
+				//Mob death by player, record
+				
+				String cause = event.getEntity().getLastDamageCause().getCause().toString();
+				String itemName = "";
+				
+				if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
+					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+				
+				this.plugin.data.recordDeath(killer.getName(), killed.getName(), killed.getWorld().getName(), cause, itemName, true, true);
+				
+			} else {
+				//Random mob death, ignore
+			}
 		}
 		
 	}
@@ -52,13 +79,21 @@ public class DeathListener implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		
-		Player killer = event.getEntity().getKiller();
+		Player killer = event.getEntity().getKiller();	//NOTE: Only set for PvP deaths
 		Player killed = event.getEntity().getPlayer();
 		String itemName = "";
+		String killerName = "";
 		
 		//System.out.println("Killer: " + killer.getDisplayName());
 		//System.out.println("Killed: " + event.getEntity().getPlayer().getDisplayName());
 		
+		
+		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
+		if (lastDamage == null)
+			return;
+		
+		
+		//PvP-related death
 		if (killer != null) {
 			ItemStack head = Heads.getCustomSkull(killed.getDisplayName());
 			
@@ -68,14 +103,44 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 			
-			if (killer.getItemInHand() != null)
+			if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
 				itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+			
+			killerName = killer.getDisplayName();
+		}
+		//Death from other causes
+		else {
+			
+			//Killed by mob
+			if (lastDamage instanceof EntityDamageByEntityEvent) {
+				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent)lastDamage;
+				
+				//If the damage came from an arrow, find said arrow's owner
+				if (nEvent.getDamager() instanceof Arrow) {
+					
+					final Arrow arrow = (Arrow)nEvent.getDamager();
+					Entity temp = (Entity)arrow.getShooter();
+					killerName = temp.getName();
+					
+					//Use if telling apart players and mobs is needed
+					//if (arrow.getShooter() instanceof Player) {
+					//}
+				}
+				//Just a regular mob kill
+				else {
+					killerName = nEvent.getDamager().getName();
+				}
+			}
+			//Other reason, whatever
+			else {
+				
+			}
 		}
 		
-		String cause = event.getEntity().getLastDamageCause().getCause().toString();
+		String cause = lastDamage.getCause().toString();
 		//String customName = event.getEntity().getCustomName();
 		
-		this.plugin.data.recordDeath(killer.getDisplayName(), killed.getDisplayName(), cause, itemName, true, true);
+		this.plugin.data.recordDeath(killerName, killed.getDisplayName(), killed.getWorld().getName(), cause, itemName, true, true);
 	}
 	
 }

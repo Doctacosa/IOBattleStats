@@ -1,5 +1,6 @@
 package com.interordi.iobattlestats;
 
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -68,14 +69,24 @@ public class DamageListener implements Listener {
 			weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
 		}
 		
-		if (damageSource.equals("Arrow")) {
-			//TODO: Find arrow's owner
+		//If the damage came from an arrow, find said arrow's owner
+		if (event.getDamager() instanceof Arrow) {
+			
+			final Arrow arrow = (Arrow)event.getDamager();
+			attacker = (Entity)arrow.getShooter();
+			System.out.println("Damager: " + event.getDamager());
+			
+			//TODO: Detect when the player damages a mob using arrows
+			
+			//Use if telling apart players and mobs is needed
+			//if (arrow.getShooter() instanceof Player) {
+			//}
 		}
 		
 		if (weaponName == null)
 			weaponName = "";
-
-		this.plugin.data.recordDamage(attacker.getName(), target.getName(), damage, damageSource, weaponName, playerSource, playerTarget);
+		
+		this.plugin.data.recordDamage(attacker.getName(), target.getName(), attacker.getWorld().getName(), damage, damageSource, weaponName, playerSource, playerTarget);
 	}
 	
 	
@@ -94,7 +105,7 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		
 		//this.plugin.getServer().broadcastMessage("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
-		this.plugin.data.recordDamage("BLOCK", target.getName(), damage, event.getCause().toString(), "", false, true);
+		this.plugin.data.recordDamage("BLOCK", target.getName(), target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
 	}
 	
 	
@@ -113,6 +124,6 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		
 		//this.plugin.getServer().broadcastMessage("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
-		this.plugin.data.recordDamage("OTHER", target.getName(), damage, event.getCause().toString(), "", false, true);
+		this.plugin.data.recordDamage("OTHER", target.getName(), target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
 	}
 }

@@ -19,13 +19,13 @@ public class DataAccess {
 	
 	
 	@SuppressWarnings("unused")
-	public void recordDamage(String source, String target, float damage, String cause, String weaponName, boolean playerSource, boolean playerTarget) {
+	public void recordDamage(String source, String target, String world, float damage, String cause, String weaponName, boolean playerSource, boolean playerTarget) {
 		
 		Connection conn = null;
 		
 		try {
-			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
 			
 			Statement stmt = conn.createStatement();
 			
@@ -49,8 +49,8 @@ public class DataAccess {
 			int isPlayerTarget = (playerTarget) ? 1 : 0;
 			
 			int val = stmt.executeUpdate(
-				"INSERT INTO Stats_io_damage (source, target, cause, damage, weapon_name, player_source, player_target)" + 
-				"VALUES ('" + source + "', '" + target + "', '" + cause + "', '" + damage + "', '" + weaponName + "', '" + isPlayerSource + "', '" + isPlayerTarget + "')"
+				"INSERT INTO Stats_io_damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
+				"VALUES ('" + source + "', '" + target + "', '" + world + "', '" + cause + "', '" + damage + "', '" + weaponName + "', '" + isPlayerSource + "', '" + isPlayerTarget + "')"
 			);
 			//System.out.println("Nb updates: " + val);
 			
@@ -65,17 +65,17 @@ public class DataAccess {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 		
-		//this.plugin.getServer().broadcastMessage(target + ", " + damage + " damage by " + source + " through " + cause);
+		this.plugin.getServer().broadcastMessage(target + ", " + damage + " damage by " + source + " through " + cause + "|" + weaponName);
 	}
 
 
-	public void recordDeath(String source, String target, String cause, String weaponName, boolean playerSource, boolean playerTarget) {
+	public void recordDeath(String source, String target, String world, String cause, String weaponName, boolean playerSource, boolean playerTarget) {
 		
 		Connection conn = null;
 		
 		try {
-			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
 			
 			Statement stmt = conn.createStatement();
 			
@@ -84,8 +84,8 @@ public class DataAccess {
 			
 			@SuppressWarnings("unused")
 			int val = stmt.executeUpdate(
-				"INSERT INTO Stats_io_deaths (source, target, cause, amount, weapon_name, player_source, player_target)" + 
-				"VALUES ('" + source + "', '" + target + "', '" + cause + "', '" + 1 + "', '" + weaponName + "', '" + isPlayerSource + "', '" + isPlayerTarget + "')"
+				"INSERT INTO Stats_io_deaths (source, target, world, cause, amount, weapon_name, player_source, player_target)" + 
+				"VALUES ('" + source + "', '" + target + "', '" + world + "', '" + cause + "', '" + 1 + "', '" + weaponName + "', '" + isPlayerSource + "', '" + isPlayerTarget + "')"
 			);
 			//System.out.println("Nb updates: " + val);
 			
@@ -100,7 +100,7 @@ public class DataAccess {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 		
-		//this.plugin.getServer().broadcastMessage(target + ", " + damage + " damage by " + source + " through " + cause);
+		this.plugin.getServer().broadcastMessage(target + ", death by " + source + " through " + cause + "|" + weaponName);
 	}
 
 
