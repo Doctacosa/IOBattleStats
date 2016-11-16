@@ -11,10 +11,18 @@ import org.bukkit.entity.Player;
 public class DataAccess {
 
 	 IOBattleStats plugin;
+	 String dbServer;
+	 String dbUsername;
+	 String dbPassword;
+	 String dbBase;
 	 
 	 
-	 DataAccess(IOBattleStats plugin) {
+	 DataAccess(IOBattleStats plugin, String dbServer, String dbUsername, String dbPassword, String dbBase) {
 		 this.plugin = plugin;
+		 this.dbServer = dbServer;
+		 this.dbUsername = dbUsername;
+		 this.dbPassword = dbPassword;
+		 this.dbBase = dbBase;
 	 }
 	
 	
@@ -24,8 +32,7 @@ public class DataAccess {
 		Connection conn = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
-			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
+			conn = DriverManager.getConnection("jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword);
 			
 			Statement stmt = conn.createStatement();
 			
@@ -74,8 +81,7 @@ public class DataAccess {
 		Connection conn = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=root&password=");
-			//conn = DriverManager.getConnection("jdbc:mysql://localhost/creeperslab?user=creeperslab&password=***REMOVED***");
+			conn = DriverManager.getConnection("jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword);
 			
 			Statement stmt = conn.createStatement();
 			

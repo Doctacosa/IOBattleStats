@@ -14,9 +14,18 @@ public class IOBattleStats extends JavaPlugin {
 	
 	
 	public void onEnable() {
+		//Always ensure we've got a copy of the config in place (does not overwrite existing)
+		this.saveDefaultConfig();
+		
+		//Configuration file use (config.yml): http://wiki.bukkit.org/Configuration_API_Reference
+		String dbServer = this.getConfig().getString("mysql.server");
+		String dbUsername = this.getConfig().getString("mysql.username");
+		String dbPassword = this.getConfig().getString("mysql.password");
+		String dbBase = this.getConfig().getString("mysql.base");
+		
 		new DamageListener(this);
 		new DeathListener(this);
-		data = new DataAccess(this);
+		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
 		tracker = new PlayersTracking(this);
 		/*
 		MyCommandExecutor executor = new MyCommandExecutor(this);
