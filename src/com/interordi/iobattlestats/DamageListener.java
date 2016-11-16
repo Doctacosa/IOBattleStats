@@ -74,7 +74,6 @@ public class DamageListener implements Listener {
 			
 			final Arrow arrow = (Arrow)event.getDamager();
 			attacker = (Entity)arrow.getShooter();
-			System.out.println("Damager: " + event.getDamager());
 			
 			//TODO: Detect when the player damages a mob using arrows
 			

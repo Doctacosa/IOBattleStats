@@ -46,8 +46,6 @@ public class DeathListener implements Listener {
 			/*
 			Player p = (Player)event.getEntity();
 			
-			System.out.println("--- It might have been a player!");
-			
 			@SuppressWarnings("unused")
 			EntityDamageEvent entityDamageCause = p.getLastDamageCause();
 			*/
@@ -83,9 +81,6 @@ public class DeathListener implements Listener {
 		Player killed = event.getEntity().getPlayer();
 		String itemName = "";
 		String killerName = "";
-		
-		//System.out.println("Killer: " + killer.getDisplayName());
-		//System.out.println("Killed: " + event.getEntity().getPlayer().getDisplayName());
 		
 		
 		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
