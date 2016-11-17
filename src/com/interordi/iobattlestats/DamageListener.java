@@ -68,12 +68,16 @@ public class DamageListener implements Listener {
 		
 		//Damage source, if known
 		if (playerSource) {
-			if (((Player)attacker).getItemInHand() != null) {
-				damageSource = ((Player)attacker).getItemInHand().getType().toString();
-				if (((Player)attacker).getItemInHand().getItemMeta() != null)
-					weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
-			}
 			attackerName = attacker.getUniqueId().toString();
+			
+			//Get the weapon's name if one was used
+			if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK || event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+				if (((Player)attacker).getItemInHand() != null) {
+					damageSource = ((Player)attacker).getItemInHand().getType().toString();
+					if (((Player)attacker).getItemInHand().getItemMeta() != null)
+						weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
+				}
+			}
 		}
 		
 		if (playerTarget) {
