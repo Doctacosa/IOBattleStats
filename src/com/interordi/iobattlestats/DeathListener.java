@@ -113,9 +113,10 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 			
-			if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName()) {
-				itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+			if (killer.getItemInHand() != null) {
 				cause = killer.getItemInHand().getType().toString();
+				if (killer.getItemInHand().getItemMeta() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
+					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
 			}
 			
 			killerName = killer.getUniqueId().toString();
