@@ -1,7 +1,7 @@
 package com.interordi.iobattlestats;
 
 //import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -61,13 +61,15 @@ public class DeathListener implements Listener {
 			LivingEntity killed = event.getEntity();
 			
 			if (killer != null) {
-				//Mob death by player, record
+				//Mob killed by player, record
 				
 				String cause = event.getEntity().getLastDamageCause().getCause().toString();
 				String itemName = "";
 				
-				if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
+				if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta() != null && killer.getItemInHand().getItemMeta().hasDisplayName()) {
 					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+					cause = killer.getItemInHand().getType().toString();
+				}
 				
 				killerName = killer.getUniqueId().toString();
 				killedName = killed.getName();
@@ -91,6 +93,7 @@ public class DeathListener implements Listener {
 		String itemName = "";
 		String killerName = "";
 		String killedName = killed.getUniqueId().toString();
+		String cause = "";
 		boolean playerSource = false;
 		boolean playerTarget = true;
 		
@@ -110,8 +113,10 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 			
-			if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
+			if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName()) {
 				itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+				cause = killer.getItemInHand().getType().toString();
+			}
 			
 			killerName = killer.getUniqueId().toString();
 			playerSource = true;
@@ -126,12 +131,13 @@ public class DeathListener implements Listener {
 			if (lastDamage instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent)lastDamage;
 				
-				//If the damage came from an arrow, find said arrow's owner
-				if (nEvent.getDamager() instanceof Arrow) {
+				//If the damage came from a projectile, find said arrow's owner
+				if (nEvent.getDamager() instanceof Projectile) {
 					
-					final Arrow arrow = (Arrow)nEvent.getDamager();
-					Entity temp = (Entity)arrow.getShooter();
+					final Projectile projectile = (Projectile)nEvent.getDamager();
+					Entity temp = (Entity)projectile.getShooter();
 					killerName = temp.getName();
+					cause = Utilities.getDamagerType(nEvent.getDamager());
 					
 					//Use if telling apart players and mobs is needed
 					//if (arrow.getShooter() instanceof Player) {
@@ -148,7 +154,8 @@ public class DeathListener implements Listener {
 			}
 		}
 		
-		String cause = lastDamage.getCause().toString();
+		if (cause.equals(""))
+			cause = lastDamage.getCause().toString();
 		//String customName = event.getEntity().getCustomName();
 		
 		this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);

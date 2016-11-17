@@ -1,9 +1,9 @@
 package com.interordi.iobattlestats;
 
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
@@ -52,9 +52,10 @@ public class DamageListener implements Listener {
 		
 		boolean playerSource = (event.getDamager() instanceof Player);
 		boolean playerTarget = (event.getEntity() instanceof Player);
+		boolean projectileSource = (event.getDamager() instanceof Projectile);
 		
 		//No human interaction = don't care
-		if (!playerSource && !playerTarget) {
+		if (!playerSource && !playerTarget && !projectileSource) {
 			return;
 		}
 		
@@ -67,8 +68,11 @@ public class DamageListener implements Listener {
 		
 		//Damage source, if known
 		if (playerSource) {
-			damageSource = ((Player)attacker).getItemInHand().getType().toString();
-			weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
+			if (((Player)attacker).getItemInHand() != null) {
+				damageSource = ((Player)attacker).getItemInHand().getType().toString();
+				if (((Player)attacker).getItemInHand().getItemMeta() != null)
+					weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
+			}
 			attackerName = attacker.getUniqueId().toString();
 		}
 		
@@ -76,21 +80,30 @@ public class DamageListener implements Listener {
 			targetName = target.getUniqueId().toString();
 		}
 		
-		//If the damage came from an arrow, find said arrow's owner
-		if (event.getDamager() instanceof Arrow) {
+		//If the damage came from a projectile, find said arrow's owner
+		if (event.getDamager() instanceof Projectile) {
 			
-			final Arrow arrow = (Arrow)event.getDamager();
-			attacker = (Entity)arrow.getShooter();
+			final Projectile projectile = (Projectile)event.getDamager();
+			attacker = (Entity)projectile.getShooter();
+			
+			if (attacker instanceof Player)
+				playerSource = true;
 			
 			if (playerSource) {
 				attackerName = attacker.getUniqueId().toString(); 
 			}
+			damageSource = Utilities.getDamagerType(event.getDamager());
 			
-			//TODO: Detect when the player damages a mob using arrows
+			//TODO: Detect when the player damages a mob using projectiles
 			
 			//Use if telling apart players and mobs is needed
-			//if (arrow.getShooter() instanceof Player) {
+			//if (projectile.getShooter() instanceof Player) {
 			//}
+		}
+		
+		//No human interaction after all = don't care
+		if (!playerSource && !playerTarget) {
+			return;
 		}
 		
 		if (weaponName == null)

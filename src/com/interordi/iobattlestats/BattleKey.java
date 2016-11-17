@@ -43,5 +43,11 @@ public class BattleKey {
 	public int hashCode() {
 		return (source + "|" + target + "|" + world + "|" + cause + "|" + weaponName).hashCode();
 	}
+	
+	
+	@Override
+	public String toString() {
+		return source + "|" + target + "|" + world + "|" + cause + "|" + weaponName;
+	}
 
 }
