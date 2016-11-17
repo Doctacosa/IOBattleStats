@@ -26,6 +26,8 @@ public class IOBattleStats extends JavaPlugin {
 		new DamageListener(this);
 		new DeathListener(this);
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, data, 60*20L, 60*20L);	//Run every two minutes
+		
 		tracker = new PlayersTracking(this);
 		/*
 		MyCommandExecutor executor = new MyCommandExecutor(this);
@@ -38,6 +40,7 @@ public class IOBattleStats extends JavaPlugin {
 	
 	
 	public void onDisable() {
+		data.run();	//Save the current data before stopping
 		getLogger().info("IOBattleStats disabled");
 	}
 	

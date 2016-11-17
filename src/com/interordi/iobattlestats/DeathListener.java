@@ -28,6 +28,11 @@ public class DeathListener implements Listener {
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
 		
+		String killerName = "";
+		String killedName = "";
+		boolean playerSource = false;
+		boolean playerTarget = false;
+		
 		//entity = PLAYER / CHICKEN
 		//getName() -> target = Chicken / DrCossack / Zombo.com
 		//getCustomName() = null / Zombo.com
@@ -64,7 +69,11 @@ public class DeathListener implements Listener {
 				if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
 					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
 				
-				this.plugin.data.recordDeath(killer.getName(), killed.getName(), killed.getWorld().getName(), cause, itemName, true, true);
+				killerName = killer.getUniqueId().toString();
+				killedName = killed.getName();
+				playerSource = true;
+				
+				this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
 				
 			} else {
 				//Random mob death, ignore
@@ -81,6 +90,9 @@ public class DeathListener implements Listener {
 		Player killed = event.getEntity().getPlayer();
 		String itemName = "";
 		String killerName = "";
+		String killedName = killed.getUniqueId().toString();
+		boolean playerSource = false;
+		boolean playerTarget = true;
 		
 		
 		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
@@ -101,10 +113,14 @@ public class DeathListener implements Listener {
 			if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
 				itemName = killer.getItemInHand().getItemMeta().getDisplayName();
 			
-			killerName = killer.getDisplayName();
+			killerName = killer.getUniqueId().toString();
+			playerSource = true;
+			playerTarget = true;
 		}
 		//Death from other causes
 		else {
+			
+			playerSource = false;
 			
 			//Killed by mob
 			if (lastDamage instanceof EntityDamageByEntityEvent) {
@@ -135,7 +151,7 @@ public class DeathListener implements Listener {
 		String cause = lastDamage.getCause().toString();
 		//String customName = event.getEntity().getCustomName();
 		
-		this.plugin.data.recordDeath(killerName, killed.getDisplayName(), killed.getWorld().getName(), cause, itemName, true, true);
+		this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
 	}
 	
 }
