@@ -39,6 +39,8 @@ public class DataAccess implements Runnable {
 		
 		BattleKey bk = new BattleKey(source, target, world, cause, weaponName, isPlayerSource, isPlayerTarget);
 		
+		//System.out.println("Damage: " + bk.toString());
+		
 		Float val = damages.get(bk);
 		if (val == null)
 			val = damage;
@@ -55,6 +57,8 @@ public class DataAccess implements Runnable {
 		int isPlayerTarget = (playerTarget) ? 1 : 0;
 		
 		BattleKey bk = new BattleKey(source, target, world, cause, weaponName, isPlayerSource, isPlayerTarget);
+		
+		//System.out.println(" Death: " + bk.toString());
 		
 		Integer val = deaths.get(bk);
 		if (val == null)
