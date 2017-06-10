@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 
 @SuppressWarnings("unused")
@@ -63,8 +64,8 @@ public class DamageListener implements Listener {
 		Entity target = event.getEntity();
 		String damageSource = event.getCause().toString();
 		String weaponName = "";
-		String attackerName = attacker.getName();
-		String targetName = target.getName();
+		String attackerName = attacker.getType().toString();
+		String targetName = target.getType().toString();
 		
 		//Damage source, if known
 		if (playerSource) {
@@ -72,10 +73,22 @@ public class DamageListener implements Listener {
 			
 			//Get the weapon's name if one was used
 			if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK || event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-				if (((Player)attacker).getItemInHand() != null) {
-					damageSource = ((Player)attacker).getItemInHand().getType().toString();
-					if (((Player)attacker).getItemInHand().getItemMeta() != null)
-						weaponName = ((Player)attacker).getItemInHand().getItemMeta().getDisplayName();
+				
+				//Check the off hand, then the main one
+				ItemStack held = ((Player)attacker).getInventory().getItemInOffHand();
+				if (held != null) {
+					damageSource = held.getType().toString();
+					if (held.getItemMeta() != null)
+						weaponName = held.getItemMeta().getDisplayName();
+				}
+				
+				if (weaponName.equals("")) {
+					held = ((Player)attacker).getInventory().getItemInMainHand();
+					if (held != null) {
+						damageSource = held.getType().toString();
+						if (held.getItemMeta() != null)
+							weaponName = held.getItemMeta().getDisplayName();
+					}
 				}
 			}
 		}

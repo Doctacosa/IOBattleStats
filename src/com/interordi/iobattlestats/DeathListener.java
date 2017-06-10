@@ -66,13 +66,23 @@ public class DeathListener implements Listener {
 				String cause = event.getEntity().getLastDamageCause().getCause().toString();
 				String itemName = "";
 				
-				if (killer.getItemInHand() != null && killer.getItemInHand().getItemMeta() != null && killer.getItemInHand().getItemMeta().hasDisplayName()) {
-					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
-					cause = killer.getItemInHand().getType().toString();
+				//Check the off hand, then the primary hand
+				ItemStack held = killer.getInventory().getItemInOffHand();
+				if (held != null && held.getItemMeta() != null && held.getItemMeta().hasDisplayName()) {
+					itemName = held.getItemMeta().getDisplayName();
+					cause = held.getType().toString();
+				}
+				
+				if (itemName.equals("")) {
+					held = killer.getInventory().getItemInMainHand();
+					if (held != null && held.getItemMeta() != null && held.getItemMeta().hasDisplayName()) {
+						itemName = held.getItemMeta().getDisplayName();
+						cause = held.getType().toString();
+					}
 				}
 				
 				killerName = killer.getUniqueId().toString();
-				killedName = killed.getName();
+				killedName = killed.getType().toString();
 				playerSource = true;
 				
 				this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
@@ -113,10 +123,21 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 			
-			if (killer.getItemInHand() != null) {
-				cause = killer.getItemInHand().getType().toString();
-				if (killer.getItemInHand().getItemMeta() != null && killer.getItemInHand().getItemMeta().hasDisplayName())
-					itemName = killer.getItemInHand().getItemMeta().getDisplayName();
+			//Check the off hand, then the primary hand
+			ItemStack held = killer.getInventory().getItemInOffHand();
+			if (held != null) {
+				cause = held.getType().toString();
+				if (held.getItemMeta() != null && held.getItemMeta().hasDisplayName())
+					itemName = held.getItemMeta().getDisplayName();
+			}
+			
+			if (itemName.equals("")) {
+				held = killer.getInventory().getItemInMainHand();
+				if (held != null) {
+					cause = held.getType().toString();
+					if (held.getItemMeta() != null && held.getItemMeta().hasDisplayName())
+						itemName = held.getItemMeta().getDisplayName();
+				}
 			}
 			
 			killerName = killer.getUniqueId().toString();
@@ -137,7 +158,7 @@ public class DeathListener implements Listener {
 					
 					final Projectile projectile = (Projectile)nEvent.getDamager();
 					Entity temp = (Entity)projectile.getShooter();
-					killerName = temp.getName();
+					killerName = temp.getType().toString();
 					cause = Utilities.getDamagerType(nEvent.getDamager());
 					
 					//Use if telling apart players and mobs is needed
@@ -146,7 +167,7 @@ public class DeathListener implements Listener {
 				}
 				//Just a regular mob kill
 				else {
-					killerName = nEvent.getDamager().getName();
+					killerName = nEvent.getDamager().getType().toString();
 				}
 			}
 			//Other reason, whatever

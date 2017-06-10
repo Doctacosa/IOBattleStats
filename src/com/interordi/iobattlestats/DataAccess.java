@@ -2,9 +2,9 @@ package com.interordi.iobattlestats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,7 +110,10 @@ public class DataAccess implements Runnable {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword);
 			
-			Statement stmt = conn.createStatement();
+			PreparedStatement pstmt = conn.prepareStatement("" +
+					"INSERT INTO Stats_io_damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+					"ON DUPLICATE KEY UPDATE damage = damage + ?");
 			
 			/*
 			if (false) {
@@ -132,15 +135,26 @@ public class DataAccess implements Runnable {
 				BattleKey bk = entry.getKey();
 				Float val = entry.getValue();
 				
-				query = "INSERT INTO Stats_io_damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
-					"VALUES ('" + bk.source + "', '" + bk.target + "', '" + bk.world + "', '" + bk.cause + "', '" + val + "', '" + bk.weaponName + "', '" + bk.isPlayerSource + "', '" + bk.isPlayerTarget + "') " +
-					"ON DUPLICATE KEY UPDATE damage = damage + " + val + "";
+				pstmt.setString(1, bk.source);
+				pstmt.setString(2, bk.target);
+				pstmt.setString(3, bk.world);
+				pstmt.setString(4, bk.cause);
+				pstmt.setFloat(5, val);
+				pstmt.setString(6, bk.weaponName);
+				pstmt.setInt(7, bk.isPlayerSource);
+				pstmt.setInt(8, bk.isPlayerTarget);
+				pstmt.setFloat(9, val);
 				
 				@SuppressWarnings("unused")
-				int res = stmt.executeUpdate(query);
+				int res = pstmt.executeUpdate();
 				//System.out.println("Nb updates: " + res);
-				
 			}
+			
+			
+			pstmt = conn.prepareStatement("" +
+					"INSERT INTO Stats_io_deaths (source, target, world, cause, amount, weapon_name, player_source, player_target)" + 
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+					"ON DUPLICATE KEY UPDATE amount = amount + ?");
 			
 			
 			//Deaths
@@ -148,15 +162,21 @@ public class DataAccess implements Runnable {
 				BattleKey bk = entry.getKey();
 				Integer val = entry.getValue();
 				
-				query = "INSERT INTO Stats_io_deaths (source, target, world, cause, amount, weapon_name, player_source, player_target)" + 
-					"VALUES ('" + bk.source + "', '" + bk.target + "', '" + bk.world + "', '" + bk.cause + "', '" + val + "', '" + bk.weaponName + "', '" + bk.isPlayerSource + "', '" + bk.isPlayerTarget + "') " +
-					"ON DUPLICATE KEY UPDATE amount = amount + " + val + "";
+				pstmt.setString(1, bk.source);
+				pstmt.setString(2, bk.target);
+				pstmt.setString(3, bk.world);
+				pstmt.setString(4, bk.cause);
+				pstmt.setFloat(5, val);
+				pstmt.setString(6, bk.weaponName);
+				pstmt.setInt(7, bk.isPlayerSource);
+				pstmt.setInt(8, bk.isPlayerTarget);
+				pstmt.setFloat(9, val);
 				
 				@SuppressWarnings("unused")
-				int res = stmt.executeUpdate(query);
+				int res = pstmt.executeUpdate();
 			}
 			
-			stmt.close();
+			pstmt.close();
 			conn.close();
 			
 		} catch (SQLException ex) {
