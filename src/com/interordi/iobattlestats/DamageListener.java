@@ -82,7 +82,7 @@ public class DamageListener implements Listener {
 						weaponName = held.getItemMeta().getDisplayName();
 				}
 				
-				if (weaponName.equals("")) {
+				if (weaponName == null || weaponName.equals("")) {
 					held = ((Player)attacker).getInventory().getItemInMainHand();
 					if (held != null) {
 						damageSource = held.getType().toString();

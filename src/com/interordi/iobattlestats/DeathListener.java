@@ -73,7 +73,7 @@ public class DeathListener implements Listener {
 					cause = held.getType().toString();
 				}
 				
-				if (itemName.equals("")) {
+				if (itemName == null || itemName.equals("")) {
 					held = killer.getInventory().getItemInMainHand();
 					if (held != null && held.getItemMeta() != null && held.getItemMeta().hasDisplayName()) {
 						itemName = held.getItemMeta().getDisplayName();
@@ -131,7 +131,7 @@ public class DeathListener implements Listener {
 					itemName = held.getItemMeta().getDisplayName();
 			}
 			
-			if (itemName.equals("")) {
+			if (itemName == null || itemName.equals("")) {
 				held = killer.getInventory().getItemInMainHand();
 				if (held != null) {
 					cause = held.getType().toString();
@@ -176,7 +176,7 @@ public class DeathListener implements Listener {
 			}
 		}
 		
-		if (cause.equals(""))
+		if (cause == null || cause.equals(""))
 			cause = lastDamage.getCause().toString();
 		//String customName = event.getEntity().getCustomName();
 		
