@@ -19,6 +19,8 @@ public class DataAccess implements Runnable {
 	 private String dbPassword;
 	 private String dbBase;
 	 
+	 private String database = "";
+	 
 	 private Map< BattleKey, Float > damages = new HashMap< BattleKey, Float>();
 	 private Map< BattleKey, Integer > deaths = new HashMap< BattleKey, Integer>();
 	 
@@ -29,6 +31,8 @@ public class DataAccess implements Runnable {
 		 this.dbUsername = dbUsername;
 		 this.dbPassword = dbPassword;
 		 this.dbBase = dbBase;
+		 
+		 database = "jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword + "&useSSL=false";
 	 }
 	
 	
@@ -108,7 +112,7 @@ public class DataAccess implements Runnable {
 		String query = "";
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword);
+			conn = DriverManager.getConnection(database);
 			
 			PreparedStatement pstmt = conn.prepareStatement("" +
 					"INSERT INTO Stats_io_damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
