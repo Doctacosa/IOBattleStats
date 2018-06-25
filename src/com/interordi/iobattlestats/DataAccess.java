@@ -14,11 +14,6 @@ public class DataAccess implements Runnable {
 
 	 @SuppressWarnings("unused")
 	private IOBattleStats plugin;
-	 private String dbServer;
-	 private String dbUsername;
-	 private String dbPassword;
-	 private String dbBase;
-	 
 	 private String database = "";
 	 
 	 private Map< BattleKey, Float > damages = new HashMap< BattleKey, Float>();
@@ -27,10 +22,6 @@ public class DataAccess implements Runnable {
 	 
 	 DataAccess(IOBattleStats plugin, String dbServer, String dbUsername, String dbPassword, String dbBase) {
 		 this.plugin = plugin;
-		 this.dbServer = dbServer;
-		 this.dbUsername = dbUsername;
-		 this.dbPassword = dbPassword;
-		 this.dbBase = dbBase;
 		 
 		 database = "jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword + "&useSSL=false";
 	 }
