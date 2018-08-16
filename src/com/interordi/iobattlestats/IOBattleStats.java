@@ -57,6 +57,7 @@ public class IOBattleStats extends JavaPlugin {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("givehead")) {
@@ -89,7 +90,7 @@ public class IOBattleStats extends JavaPlugin {
 			
 			user.sendMessage("Here's some head.");
 			
-			Heads.giveToPlayer(targetName, user);
+			Heads.giveToPlayer(Bukkit.getOfflinePlayer(targetName), user);
 			
 			return true;
 		}

@@ -1,6 +1,7 @@
 name: IOBattleStats
 main: com.interordi.iobattlestats.IOBattleStats
 version: 1.0
+api-version: 1.13
 
 commands:
   givehead:

@@ -115,7 +115,7 @@ public class DeathListener implements Listener {
 		
 		//PvP-related death
 		if (killer != null) {
-			ItemStack head = Heads.getCustomSkull(killed.getDisplayName());
+			ItemStack head = Heads.getCustomSkull(killed);
 			
 			//Drop the head on the ground at the slain players position
 			event.getEntity().getWorld().dropItemNaturally(killed.getLocation(), head);
