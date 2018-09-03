@@ -13,7 +13,7 @@ public class Heads {
 	
 	//Generate a player head
 	public static ItemStack getCustomSkull(OfflinePlayer target) {
-		final ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+		final ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
 		final SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwningPlayer(target);	//p.getSkinName()
 		meta.setDisplayName(ChatColor.RESET + target.getName());
