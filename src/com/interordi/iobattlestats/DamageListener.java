@@ -126,6 +126,7 @@ public class DamageListener implements Listener {
 		if (weaponName == null)
 			weaponName = "";
 		
+		//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by ENTITY through " + event.getCause());
 		this.plugin.data.recordDamage(attackerName, targetName, attacker.getWorld().getName(), damage, damageSource, weaponName, playerSource, playerTarget);
 	}
 	
@@ -145,7 +146,7 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		String targetName = target.getUniqueId().toString();
 		
-		//this.plugin.getServer().broadcastMessage("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
+		//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
 		this.plugin.data.recordDamage("BLOCK", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
 	}
 	
@@ -165,7 +166,7 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		String targetName = target.getUniqueId().toString();
 		
-		//this.plugin.getServer().broadcastMessage("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
+		//System.out.println("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
 		this.plugin.data.recordDamage("OTHER", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
 	}
 }
