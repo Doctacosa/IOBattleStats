@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.structures;
 
 public class BattleKey {
 

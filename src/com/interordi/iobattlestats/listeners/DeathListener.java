@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.listeners;
 
 //import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
@@ -12,6 +12,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.interordi.iobattlestats.IOBattleStats;
+import com.interordi.iobattlestats.utilities.Heads;
+import com.interordi.iobattlestats.utilities.Utilities;
 
 
 public class DeathListener implements Listener {

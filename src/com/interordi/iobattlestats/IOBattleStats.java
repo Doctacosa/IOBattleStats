@@ -6,11 +6,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.interordi.iobattlestats.listeners.DamageListener;
+import com.interordi.iobattlestats.listeners.DeathListener;
+import com.interordi.iobattlestats.utilities.Heads;
+
 
 public class IOBattleStats extends JavaPlugin {
 
-	DataAccess data;
-	PlayersTracking tracker;
+	public DataAccess data;
+	private PlayersTracking tracker;
 	
 	
 	public void onEnable() {

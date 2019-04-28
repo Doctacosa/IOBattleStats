@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.listeners;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -10,6 +10,9 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.interordi.iobattlestats.IOBattleStats;
+import com.interordi.iobattlestats.utilities.Utilities;
 
 
 @SuppressWarnings("unused")

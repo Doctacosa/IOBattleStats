@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
+import com.interordi.iobattlestats.structures.BattleKey;
+
 public class DataAccess implements Runnable {
 
 	 @SuppressWarnings("unused")

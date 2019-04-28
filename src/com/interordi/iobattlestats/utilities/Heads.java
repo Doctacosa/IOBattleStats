@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.utilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

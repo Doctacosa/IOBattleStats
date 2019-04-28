@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.structures;
 
 
 //Object to hold a damage pair, used to quickly store and retrive information

@@ -1,6 +1,9 @@
-package com.interordi.iobattlestats;
+package com.interordi.iobattlestats.listeners;
 
 import org.bukkit.event.player.*;
+
+import com.interordi.iobattlestats.IOBattleStats;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
