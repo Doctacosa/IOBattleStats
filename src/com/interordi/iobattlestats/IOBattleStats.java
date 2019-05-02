@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.interordi.iobattlestats.listeners.ChatListener;
 import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
 import com.interordi.iobattlestats.utilities.Heads;
@@ -29,8 +30,10 @@ public class IOBattleStats extends JavaPlugin {
 		
 		new DamageListener(this);
 		new DeathListener(this);
+		new ChatListener(this);
+		
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, data, 60*20L, 60*20L);	//Run every two minutes
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, data, 60*20L, 60*20L);	//Run every minute
 		
 		tracker = new PlayersTracking(this);
 		/*

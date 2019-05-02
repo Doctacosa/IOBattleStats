@@ -7,19 +7,26 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
 import com.interordi.iobattlestats.structures.BattleKey;
+import com.interordi.iobattlestats.structures.StatKey;
+import com.interordi.iobattlestats.structures.StatUpdate;
 
 public class DataAccess implements Runnable {
 
 	 @SuppressWarnings("unused")
 	private IOBattleStats plugin;
 	private String database = "";
+	private String tablePrefix = "Stats_io_";
 	
 	private Map< BattleKey, Float > damages = new HashMap< BattleKey, Float>();
 	private Map< BattleKey, Integer > deaths = new HashMap< BattleKey, Integer>();
+	
+	private Vector< StatUpdate > basicStats = new Vector< StatUpdate >();
 	
 	
 	DataAccess(IOBattleStats plugin, String dbServer, String dbUsername, String dbPassword, String dbBase) {
@@ -65,6 +72,12 @@ public class DataAccess implements Runnable {
 		
 		deaths.put(bk, val);
 	}
+	
+	
+	//Generic method to record a stat in the given table
+	public void recordBasicStat(String table, UUID uuid, int value, String world) {
+		basicStats.add(new StatUpdate(table, uuid, value, world));
+	}
 
 
 	//Load an incoming player's stats
@@ -81,23 +94,38 @@ public class DataAccess implements Runnable {
 	}
 
 
+	//Save data on a regular basis in its own thread to lighten load on the main server
 	@Override
 	public void run() {
-		//Save data on a regular basis in its own thread to lighten load on the main server
-		
-		//Nothing to do, exit
-		if (damages.size() == 0 && deaths.size() == 0) {
-			return;
-		}
-		
 		
 		//Copy the maps then clear them
 		Map< BattleKey, Float > damagesCopy = new HashMap< BattleKey, Float>();
 		Map< BattleKey, Integer > deathsCopy = new HashMap< BattleKey, Integer>();
+		Vector< StatUpdate > basicStatsCopy = new Vector< StatUpdate >();
 		damagesCopy.putAll(damages);
 		deathsCopy.putAll(deaths);
+		basicStatsCopy.addAll(basicStats);
 		damages.clear();
 		deaths.clear();
+		basicStats.clear();
+		
+		
+		//Structure the basic stats to minimize the amount of SQL queries
+		Map< String, Map< StatKey, Integer > > basicStructured = new HashMap< String, Map< StatKey, Integer > >();
+		for (StatUpdate entry : basicStatsCopy) {
+			Map< StatKey, Integer > tableStats;
+			tableStats = basicStructured.get(entry.table);
+			if (tableStats == null)
+				tableStats = new HashMap< StatKey, Integer >();
+			
+			StatKey thisStat = new StatKey(entry.uuid, entry.world);
+			int newValue = entry.value;
+			if (tableStats.containsKey(thisStat))
+				newValue += tableStats.get(thisStat);
+			tableStats.put(thisStat, newValue);
+			
+			basicStructured.put(entry.table, tableStats);
+		}
 		
 		
 		//Damages
@@ -108,7 +136,7 @@ public class DataAccess implements Runnable {
 			conn = DriverManager.getConnection(database);
 			
 			PreparedStatement pstmt = conn.prepareStatement("" +
-					"INSERT INTO Stats_io_damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
+					"INSERT INTO " + this.tablePrefix + "damage (source, target, world, cause, damage, weapon_name, player_source, player_target)" + 
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
 					"ON DUPLICATE KEY UPDATE damage = damage + ?");
 			
@@ -148,13 +176,12 @@ public class DataAccess implements Runnable {
 			}
 			
 			
+			//Deaths
 			pstmt = conn.prepareStatement("" +
-					"INSERT INTO Stats_io_deaths (source, target, world, cause, amount, weapon_name, player_source, player_target)" + 
+					"INSERT INTO " + this.tablePrefix + "deaths (source, target, world, cause, amount, weapon_name, player_source, player_target)" + 
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
 					"ON DUPLICATE KEY UPDATE amount = amount + ?");
 			
-			
-			//Deaths
 			for (Map.Entry< BattleKey, Integer > entry : deathsCopy.entrySet()) {
 				BattleKey bk = entry.getKey();
 				Integer val = entry.getValue();
@@ -172,6 +199,28 @@ public class DataAccess implements Runnable {
 				@SuppressWarnings("unused")
 				int res = pstmt.executeUpdate();
 			}
+			
+			
+			//Basic stats, saved table by table
+			for (Map.Entry< String, Map< StatKey, Integer > > tableEntry: basicStructured.entrySet()) {
+				String table = tableEntry.getKey();
+				
+				pstmt = conn.prepareStatement("" +
+						"INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount)" + 
+						"VALUES (?, ?, ?) " +
+						"ON DUPLICATE KEY UPDATE amount = amount + ?");
+				
+				for (Map.Entry< StatKey, Integer > entry : tableEntry.getValue().entrySet()) {
+					pstmt.setString(1, entry.getKey().uuid.toString());
+					pstmt.setString(2, entry.getKey().world);
+					pstmt.setInt(3, entry.getValue());
+					pstmt.setInt(4, entry.getValue());
+					
+					@SuppressWarnings("unused")
+					int res = pstmt.executeUpdate();
+				}
+			}
+			
 			
 			pstmt.close();
 			conn.close();
