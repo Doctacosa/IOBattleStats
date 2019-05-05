@@ -110,11 +110,7 @@ public class DeathListener implements Listener {
 		String cause = "";
 		boolean playerSource = false;
 		boolean playerTarget = true;
-		
-		
 		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
-		if (lastDamage == null)
-			return;
 		
 		
 		//PvP-related death
@@ -154,7 +150,7 @@ public class DeathListener implements Listener {
 			playerSource = false;
 			
 			//Killed by mob
-			if (lastDamage instanceof EntityDamageByEntityEvent) {
+			if (lastDamage != null && lastDamage instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent)lastDamage;
 				
 				//If the damage came from a projectile, find said arrow's owner
@@ -180,8 +176,12 @@ public class DeathListener implements Listener {
 			}
 		}
 		
-		if (cause == null || cause.equals(""))
-			cause = lastDamage.getCause().toString();
+		if (cause == null || cause.equals("")) {
+			if (lastDamage != null)
+				cause = lastDamage.getCause().toString();
+			else
+				cause = "Natural causes";
+		}
 		//String customName = event.getEntity().getCustomName();
 		
 		this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
