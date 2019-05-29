@@ -75,8 +75,20 @@ public class DataAccess implements Runnable {
 	
 	
 	//Generic method to record a stat in the given table
-	public void recordBasicStat(String table, UUID uuid, int value, String world) {
-		basicStats.add(new StatUpdate(table, uuid, value, world));
+	public void recordBasicStat(String table, UUID uuid, int amount, String world) {
+		basicStats.add(new StatUpdate(StatUpdate.BASIC, table, uuid, amount, world));
+	}
+
+
+	//Generic method to record a named stat in the given table
+	public void recordItemStat(String table, UUID uuid, String value, int amount, String world) {
+		basicStats.add(new StatUpdate(StatUpdate.VALUE, table, uuid, amount, world, value));
+	}
+
+
+	//Generic method to record a named stat in the given table
+	public void recordItemNamedStat(String table, UUID uuid, String value, String name, int amount, String world) {
+		basicStats.add(new StatUpdate(StatUpdate.NAMED, table, uuid, amount, world, value, name));
 	}
 
 
@@ -109,6 +121,8 @@ public class DataAccess implements Runnable {
 		deaths.clear();
 		basicStats.clear();
 		
+		Map< String, Integer > formats = new HashMap< String, Integer >();
+		
 		
 		//Structure the basic stats to minimize the amount of SQL queries
 		Map< String, Map< StatKey, Integer > > basicStructured = new HashMap< String, Map< StatKey, Integer > >();
@@ -118,13 +132,14 @@ public class DataAccess implements Runnable {
 			if (tableStats == null)
 				tableStats = new HashMap< StatKey, Integer >();
 			
-			StatKey thisStat = new StatKey(entry.uuid, entry.world);
-			int newValue = entry.value;
+			StatKey thisStat = new StatKey(entry.uuid, entry.world, entry.value, entry.name);
+			int newAmount = entry.amount;
 			if (tableStats.containsKey(thisStat))
-				newValue += tableStats.get(thisStat);
-			tableStats.put(thisStat, newValue);
+				newAmount += tableStats.get(thisStat);
+			tableStats.put(thisStat, newAmount);
 			
 			basicStructured.put(entry.table, tableStats);
+			formats.put(entry.table, entry.format);
 		}
 		
 		
@@ -204,17 +219,37 @@ public class DataAccess implements Runnable {
 			//Basic stats, saved table by table
 			for (Map.Entry< String, Map< StatKey, Integer > > tableEntry: basicStructured.entrySet()) {
 				String table = tableEntry.getKey();
+				int format = formats.get(table);
 				
-				pstmt = conn.prepareStatement("" +
-						"INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount)" + 
-						"VALUES (?, ?, ?) " +
-						"ON DUPLICATE KEY UPDATE amount = amount + ?");
+				if (format == StatUpdate.BASIC)
+					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount)" + 
+							"VALUES (?, ?, ?) " +
+							"ON DUPLICATE KEY UPDATE amount = amount + ?";
+				else if (format == StatUpdate.VALUE)
+					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount, value)" + 
+							"VALUES (?, ?, ?, ?) " +
+							"ON DUPLICATE KEY UPDATE amount = amount + ?";
+				else if (format == StatUpdate.NAMED)
+					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount, value, name)" + 
+							"VALUES (?, ?, ?, ?, ?) " +
+							"ON DUPLICATE KEY UPDATE amount = amount + ?";
+				
+				pstmt = conn.prepareStatement(query);
 				
 				for (Map.Entry< StatKey, Integer > entry : tableEntry.getValue().entrySet()) {
 					pstmt.setString(1, entry.getKey().uuid.toString());
 					pstmt.setString(2, entry.getKey().world);
 					pstmt.setInt(3, entry.getValue());
-					pstmt.setInt(4, entry.getValue());
+					if (format == StatUpdate.BASIC) {
+						pstmt.setInt(4, entry.getValue());
+					} else if (format == StatUpdate.VALUE) {
+						pstmt.setString(4, entry.getKey().value);
+						pstmt.setInt(5, entry.getValue());
+					} else if (format == StatUpdate.NAMED) {
+						pstmt.setString(4, entry.getKey().value);
+						pstmt.setString(5, entry.getKey().name);
+						pstmt.setInt(6, entry.getValue());
+					}
 					
 					@SuppressWarnings("unused")
 					int res = pstmt.executeUpdate();
