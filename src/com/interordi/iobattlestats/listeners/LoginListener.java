@@ -21,6 +21,8 @@ public class LoginListener implements Listener {
 	@EventHandler	//Annotation - EventPriority.NORMAL by default
 	public void onPlayerLogin(PlayerJoinEvent event) {
 		this.plugin.addPlayer(event.getPlayer());
+		
+		this.plugin.data.recordBasicStat("joins", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 	}
 	
 	
