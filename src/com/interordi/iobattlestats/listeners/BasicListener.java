@@ -1,7 +1,9 @@
 package com.interordi.iobattlestats.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -97,5 +99,14 @@ public class BasicListener implements Listener {
 	public void onPlayerExpChangeEvent(PlayerExpChangeEvent event) {
 		if (event.getAmount() > 0)
 			this.plugin.data.recordBasicStat("xp_gained", event.getPlayer().getUniqueId(), event.getAmount(), event.getPlayer().getWorld().getName());
+	}
+	
+	
+	@EventHandler
+	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
+		if (event.getEntity().getShooter() instanceof Player) {
+			Player player = (Player)event.getEntity().getShooter();
+			this.plugin.data.recordBasicStat("arrows", player.getUniqueId(), 1, player.getWorld().getName());
+		}
 	}
 }
