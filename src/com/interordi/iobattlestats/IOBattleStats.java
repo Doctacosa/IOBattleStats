@@ -12,12 +12,13 @@ import com.interordi.iobattlestats.listeners.ChatListener;
 import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
 import com.interordi.iobattlestats.utilities.Heads;
+import com.interordi.iobattlestats.utilities.PlayersMove;
 
 
 public class IOBattleStats extends JavaPlugin {
 
 	public DataAccess data;
-	private PlayersTracking tracker;
+	public PlayersTracking tracker;
 	
 	
 	public void onEnable() {
@@ -35,6 +36,7 @@ public class IOBattleStats extends JavaPlugin {
 		new ChatListener(this);
 		new BasicListener(this);
 		new BlockListener(this);
+		PlayersMove playersMove = new PlayersMove(this);
 		
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, data, 60*20L, 60*20L);	//Run every minute
@@ -45,6 +47,9 @@ public class IOBattleStats extends JavaPlugin {
 		getCommand("basic").setExecutor(executor);
 		getCommand("basic2").setExecutor(executor);
 		*/
+		
+		//Check for player movements every so often
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, playersMove, 10*20L, 10*20L);
 		
 		getLogger().info("IOBattleStats enabled");
 	}
@@ -57,14 +62,14 @@ public class IOBattleStats extends JavaPlugin {
 	
 	
 	public void addPlayer(Player player) {
-		this.tracker.addPlayer(player);
+		this.tracker.add(player);
 		this.data.loadStats(player);
 	}
 	
 	
 	public void removePlayer(Player player) {
 		this.data.saveStats(player);
-		this.tracker.removePlayer(player);
+		this.tracker.remove(player);
 	}
 	
 	
