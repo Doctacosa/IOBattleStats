@@ -7,6 +7,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -108,5 +109,11 @@ public class BasicListener implements Listener {
 			Player player = (Player)event.getEntity().getShooter();
 			this.plugin.data.recordBasicStat("arrows", player.getUniqueId(), 1, player.getWorld().getName());
 		}
+	}
+	
+	
+	@EventHandler
+	public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+		this.plugin.data.recordBasicStat("change_world", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 	}
 }
