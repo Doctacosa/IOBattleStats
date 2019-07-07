@@ -42,7 +42,6 @@ public class BlockListener implements Listener {
 	@EventHandler
 	public void onInventoryClickEvent(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player) ||
-			(!event.getInventory().getType().equals(InventoryType.CRAFTING) && !event.getInventory().getType().equals(InventoryType.WORKBENCH)) ||
 			event.getSlotType() != InventoryType.SlotType.RESULT ||
 			event.getCurrentItem() == null)
 			return;
@@ -55,7 +54,10 @@ public class BlockListener implements Listener {
 		String name = event.getCurrentItem().getItemMeta().getDisplayName();
 		int amount = event.getCurrentItem().getAmount();
 
-		this.plugin.data.recordItemNamedStat("crafted", player.getUniqueId(), item, name, amount, player.getWorld().getName());
+		if (event.getInventory().getType().equals(InventoryType.CRAFTING) || event.getInventory().getType().equals(InventoryType.WORKBENCH))
+			this.plugin.data.recordItemNamedStat("crafted", player.getUniqueId(), item, name, amount, player.getWorld().getName());
+		else if (event.getInventory().getType().equals(InventoryType.MERCHANT))
+			this.plugin.data.recordItemNamedStat("trade", player.getUniqueId(), item, name, amount, player.getWorld().getName());
 	}
 
 
