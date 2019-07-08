@@ -11,6 +11,7 @@ public class PlayersTracking {
 	
 	IOBattleStats plugin;
 	private Map< UUID , Location > locations = new HashMap< UUID, Location >();
+	private Map< UUID, Integer > pvpStreaks = new HashMap< UUID, Integer>();
 	
 	
 	PlayersTracking(IOBattleStats plugin) {
@@ -37,6 +38,29 @@ public class PlayersTracking {
 	//Set the current position of a player
 	public void setPosition(Player player, Location pos) {
 		locations.put(player.getUniqueId(), pos);
+	}
+	
+	
+	//Add 1 to the player's kill streak
+	public void registerKill(Player player) {
+		if (pvpStreaks.containsKey(player.getUniqueId())) {
+			int kills = pvpStreaks.get(player.getUniqueId());
+			pvpStreaks.put(player.getUniqueId(), kills + 1);
+		} else {
+			pvpStreaks.put(player.getUniqueId(), 1);
+		}
+	}
+	
+	
+	//Player died - reset kill streak!
+	public void resetKills(Player player) {
+		pvpStreaks.put(player.getUniqueId(), 0);
+	}
+	
+	
+	//Get the list of kill streaks to save them
+	public Map< UUID, Integer > getKillStreaks() {
+		return pvpStreaks;
 	}
 	
 

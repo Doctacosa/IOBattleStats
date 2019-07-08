@@ -140,6 +140,10 @@ public class DeathListener implements Listener {
 				}
 			}
 			
+			//Update ongoing kill streaks
+			plugin.tracker.registerKill(killer);
+			plugin.tracker.resetKills(killed);
+			
 			killerName = killer.getUniqueId().toString();
 			playerSource = true;
 			playerTarget = true;

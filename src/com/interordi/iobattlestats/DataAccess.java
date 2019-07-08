@@ -257,6 +257,23 @@ public class DataAccess implements Runnable {
 			}
 			
 			
+			//Kill streaks
+			query = "INSERT INTO " + this.tablePrefix + "pvp_streak (uuid, value)" + 
+					"VALUES (?, ?) " +
+					"ON DUPLICATE KEY UPDATE value = ?";
+			pstmt = conn.prepareStatement(query);
+			
+			for (Map.Entry< UUID, Integer > killStreak : plugin.tracker.getKillStreaks().entrySet()) {
+				pstmt.setString(1, killStreak.getKey().toString());
+				pstmt.setInt(2, killStreak.getValue());
+				pstmt.setInt(3, killStreak.getValue());
+
+				@SuppressWarnings("unused")
+				int res = pstmt.executeUpdate();
+			}
+			
+			
+			
 			pstmt.close();
 			conn.close();
 			
