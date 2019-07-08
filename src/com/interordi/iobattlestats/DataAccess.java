@@ -21,7 +21,7 @@ public class DataAccess implements Runnable {
 	 @SuppressWarnings("unused")
 	private IOBattleStats plugin;
 	private String database = "";
-	private String tablePrefix = "Stats_io_";
+	private String tablePrefix = "stats_io_";
 	
 	private Map< BattleKey, Float > damages = new HashMap< BattleKey, Float>();
 	private Map< BattleKey, Integer > deaths = new HashMap< BattleKey, Integer>();
