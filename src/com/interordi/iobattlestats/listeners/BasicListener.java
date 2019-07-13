@@ -52,7 +52,7 @@ public class BasicListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
-		this.plugin.data.recordBasicStat("commands_done", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordBasicStat("commands", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 	}
 	
 	
@@ -73,7 +73,7 @@ public class BasicListener implements Listener {
 	@EventHandler
 	public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent event) {
 		//TODO: Keep only the results of eating solids?
-		this.plugin.data.recordBasicStat("consume", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordBasicStat("consumed", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 	}
 	
 	
@@ -92,7 +92,7 @@ public class BasicListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerKickEvent(PlayerKickEvent event) {
-		this.plugin.data.recordBasicStat("kicked", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordBasicStat("kicks", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 	}
 	
 	
