@@ -57,7 +57,7 @@ public class BlockListener implements Listener {
 		if (event.getInventory().getType().equals(InventoryType.CRAFTING) || event.getInventory().getType().equals(InventoryType.WORKBENCH))
 			this.plugin.data.recordItemNamedStat("crafted", player.getUniqueId(), item, name, amount, player.getWorld().getName());
 		else if (event.getInventory().getType().equals(InventoryType.MERCHANT))
-			this.plugin.data.recordItemNamedStat("trade", player.getUniqueId(), item, name, amount, player.getWorld().getName());
+			this.plugin.data.recordItemNamedStat("trades", player.getUniqueId(), item, name, amount, player.getWorld().getName());
 	}
 
 
