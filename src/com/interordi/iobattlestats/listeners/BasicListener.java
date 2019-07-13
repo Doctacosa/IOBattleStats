@@ -107,7 +107,8 @@ public class BasicListener implements Listener {
 	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
 		if (event.getEntity().getShooter() instanceof Player) {
 			Player player = (Player)event.getEntity().getShooter();
-			this.plugin.data.recordBasicStat("arrows", player.getUniqueId(), 1, player.getWorld().getName());
+			//TODO: Track arrow types as the value
+			this.plugin.data.recordItemStat("arrows", player.getUniqueId(), "", 1, player.getWorld().getName());
 		}
 	}
 	
