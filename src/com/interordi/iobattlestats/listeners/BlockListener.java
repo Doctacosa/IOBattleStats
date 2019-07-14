@@ -43,6 +43,7 @@ public class BlockListener implements Listener {
 	public void onInventoryClickEvent(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player) ||
 			event.getSlotType() != InventoryType.SlotType.RESULT ||
+			event.getCurrentItem().getItemMeta() == null ||
 			event.getCurrentItem() == null)
 			return;
 		
