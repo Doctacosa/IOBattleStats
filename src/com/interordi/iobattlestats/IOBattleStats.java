@@ -39,7 +39,7 @@ public class IOBattleStats extends JavaPlugin {
 		PlayersMove playersMove = new PlayersMove(this);
 		
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, data, 60*20L, 60*20L);	//Run every minute
+		getServer().getScheduler().runTaskTimerAsynchronously(this, data, 60*20L, 60*20L);	//Run every minute
 		
 		tracker = new PlayersTracking(this);
 		/*
