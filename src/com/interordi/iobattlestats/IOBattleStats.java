@@ -11,6 +11,7 @@ import com.interordi.iobattlestats.listeners.BlockListener;
 import com.interordi.iobattlestats.listeners.ChatListener;
 import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
+import com.interordi.iobattlestats.listeners.LoginListener;
 import com.interordi.iobattlestats.utilities.Heads;
 import com.interordi.iobattlestats.utilities.PlayersMove;
 
@@ -31,11 +32,12 @@ public class IOBattleStats extends JavaPlugin {
 		String dbPassword = this.getConfig().getString("mysql.password");
 		String dbBase = this.getConfig().getString("mysql.base");
 		
-		new DamageListener(this);
-		new DeathListener(this);
-		new ChatListener(this);
 		new BasicListener(this);
 		new BlockListener(this);
+		new ChatListener(this);
+		new DamageListener(this);
+		new DeathListener(this);
+		new LoginListener(this);
 		PlayersMove playersMove = new PlayersMove(this);
 		
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
