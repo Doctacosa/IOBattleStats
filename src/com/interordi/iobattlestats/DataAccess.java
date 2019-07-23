@@ -90,6 +90,13 @@ public class DataAccess implements Runnable {
 	public void recordItemNamedStat(String table, UUID uuid, String value, String name, int amount, String world) {
 		basicStats.add(new StatUpdate(StatUpdate.NAMED, table, uuid, amount, world, value, name));
 	}
+	
+	
+	//Record a player's name and UUID
+	public void recordPlayer(UUID uuid, String name) {
+		basicStats.add(new StatUpdate(StatUpdate.PLAYER, "players", uuid, name));
+	}
+
 
 
 	//Load an incoming player's stats
@@ -233,22 +240,33 @@ public class DataAccess implements Runnable {
 					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, world, amount, value, name)" + 
 							"VALUES (?, ?, ?, ?, ?) " +
 							"ON DUPLICATE KEY UPDATE amount = amount + ?";
+				else if (format == StatUpdate.PLAYER)
+					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, name)" + 
+							"VALUES (?, ?) " +
+							"ON DUPLICATE KEY UPDATE name = ?";
 				
 				pstmt = conn.prepareStatement(query);
 				
 				for (Map.Entry< StatKey, Integer > entry : tableEntry.getValue().entrySet()) {
 					pstmt.setString(1, entry.getKey().uuid.toString());
-					pstmt.setString(2, entry.getKey().world);
-					pstmt.setInt(3, entry.getValue());
 					if (format == StatUpdate.BASIC) {
+						pstmt.setString(2, entry.getKey().world);
+						pstmt.setInt(3, entry.getValue());
 						pstmt.setInt(4, entry.getValue());
 					} else if (format == StatUpdate.VALUE) {
+						pstmt.setString(2, entry.getKey().world);
+						pstmt.setInt(3, entry.getValue());
 						pstmt.setString(4, entry.getKey().value);
 						pstmt.setInt(5, entry.getValue());
 					} else if (format == StatUpdate.NAMED) {
+						pstmt.setString(2, entry.getKey().world);
+						pstmt.setInt(3, entry.getValue());
 						pstmt.setString(4, entry.getKey().value);
 						pstmt.setString(5, entry.getKey().name);
 						pstmt.setInt(6, entry.getValue());
+					} else if (format == StatUpdate.PLAYER) {
+						pstmt.setString(2, entry.getKey().value);
+						pstmt.setString(3, entry.getKey().value);
 					}
 					
 					@SuppressWarnings("unused")
