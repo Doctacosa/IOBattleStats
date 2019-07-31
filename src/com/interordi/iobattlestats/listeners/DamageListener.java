@@ -1,5 +1,6 @@
 package com.interordi.iobattlestats.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -129,8 +130,11 @@ public class DamageListener implements Listener {
 		if (weaponName == null)
 			weaponName = "";
 		
-		//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by ENTITY through " + event.getCause());
-		this.plugin.data.recordDamage(attackerName, targetName, attacker.getWorld().getName(), damage, damageSource, weaponName, playerSource, playerTarget);
+		if ((playerSource && attacker.hasPermission("iobattlestats.track")) ||
+			(playerTarget && target.hasPermission("iobattlestats.track"))) {
+			//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by ENTITY through " + event.getCause());
+			this.plugin.data.recordDamage(attackerName, targetName, attacker.getWorld().getName(), damage, damageSource, weaponName, playerSource, playerTarget);
+		}
 	}
 	
 	
@@ -149,8 +153,10 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		String targetName = target.getUniqueId().toString();
 		
-		//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
-		this.plugin.data.recordDamage("BLOCK", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+		if (target.hasPermission("iobattlestats.track")) {
+			//System.out.println("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
+			this.plugin.data.recordDamage("BLOCK", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+		}
 	}
 	
 	
@@ -169,7 +175,9 @@ public class DamageListener implements Listener {
 		Player target = (Player)event.getEntity();
 		String targetName = target.getUniqueId().toString();
 		
-		//System.out.println("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
-		this.plugin.data.recordDamage("OTHER", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+		if (target.hasPermission("iobattlestats.track")) {
+			//System.out.println("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
+			this.plugin.data.recordDamage("OTHER", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+		}
 	}
 }

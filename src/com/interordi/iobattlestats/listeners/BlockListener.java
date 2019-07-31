@@ -27,6 +27,8 @@ public class BlockListener implements Listener {
 	
 	@EventHandler
 	public void onBlockBreakEvent(BlockBreakEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
 		String block = event.getBlock().getBlockData().getMaterial().toString();
 		this.plugin.data.recordItemStat("blocks_broken", event.getPlayer().getUniqueId(), block, 1, event.getPlayer().getWorld().getName());
 	}
@@ -34,6 +36,8 @@ public class BlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockPlaceEvent(BlockPlaceEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
 		String block = event.getBlock().getBlockData().getMaterial().toString();
 		this.plugin.data.recordItemStat("blocks_placed", event.getPlayer().getUniqueId(), block, 1, event.getPlayer().getWorld().getName());
 	}
@@ -45,6 +49,9 @@ public class BlockListener implements Listener {
 			event.getSlotType() != InventoryType.SlotType.RESULT ||
 			event.getCurrentItem().getItemMeta() == null ||
 			event.getCurrentItem() == null)
+			return;
+
+		if (!event.getWhoClicked().hasPermission("iobattlestats.track"))
 			return;
 		
 		//TODO: Detect shift-click...?
@@ -64,6 +71,8 @@ public class BlockListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
 		//TODO: Avoid /give triggering this
 		String item = event.getItemDrop().getItemStack().getType().toString();
 		String name = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
@@ -81,12 +90,15 @@ public class BlockListener implements Listener {
 		String name = event.getItem().getItemStack().getItemMeta().getDisplayName();
 		
 		Player player = (Player)event.getEntity();
-		this.plugin.data.recordItemNamedStat("item_picked_up", player.getUniqueId(), item, name, 1, player.getWorld().getName());
+		if (player.hasPermission("iobattlestats.track"))
+			this.plugin.data.recordItemNamedStat("item_picked_up", player.getUniqueId(), item, name, 1, player.getWorld().getName());
 	}
 
 
 	@EventHandler
 	public void onPlayerItemBreakEvent(PlayerItemBreakEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
 		String item = event.getBrokenItem().getType().toString();
 		this.plugin.data.recordItemStat("item_broken", event.getPlayer().getUniqueId(), item, 1, event.getPlayer().getWorld().getName());
 	}

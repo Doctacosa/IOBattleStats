@@ -32,6 +32,8 @@ public class ChatListener implements Listener {
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
 		
 		UUID uuid = event.getPlayer().getUniqueId();
 		int nbWords = event.getMessage().split("\\s").length;

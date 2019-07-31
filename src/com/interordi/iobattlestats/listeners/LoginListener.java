@@ -22,6 +22,9 @@ public class LoginListener implements Listener {
 	public void onPlayerLogin(PlayerJoinEvent event) {
 		this.plugin.addPlayer(event.getPlayer());
 		
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
+		
 		this.plugin.data.recordBasicStat("joins", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
 		this.plugin.data.recordPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 	}

@@ -89,7 +89,9 @@ public class DeathListener implements Listener {
 				killedName = killed.getType().toString();
 				playerSource = true;
 				
-				this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+				if (killer.hasPermission("iobattlestats.track")) {
+					this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+				}
 				
 			} else {
 				//Random mob death, ignore
@@ -188,7 +190,10 @@ public class DeathListener implements Listener {
 		}
 		//String customName = event.getEntity().getCustomName();
 		
-		this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+		if ((playerSource && killer.hasPermission("iobattlestats.track")) ||
+			(playerTarget && killed.hasPermission("iobattlestats.track"))) {
+			this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+		}
 	}
 	
 }
