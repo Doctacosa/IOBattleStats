@@ -12,8 +12,8 @@ import com.interordi.iobattlestats.listeners.ChatListener;
 import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
 import com.interordi.iobattlestats.listeners.LoginListener;
+import com.interordi.iobattlestats.listeners.PlayersMove;
 import com.interordi.iobattlestats.utilities.Heads;
-import com.interordi.iobattlestats.utilities.PlayersMove;
 
 
 public class IOBattleStats extends JavaPlugin {

@@ -1,4 +1,4 @@
-package com.interordi.iobattlestats.utilities;
+package com.interordi.iobattlestats.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
