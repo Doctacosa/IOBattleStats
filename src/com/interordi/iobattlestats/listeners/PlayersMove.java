@@ -32,6 +32,9 @@ public class PlayersMove implements Runnable, Listener {
 		//Get the list of online players
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			
+			if (!player.hasPermission("iobattlestats.track"))
+				return;
+			
 			Location newPos = player.getLocation();
 			Location oldPos = plugin.tracker.getLastPosition(player);
 			
