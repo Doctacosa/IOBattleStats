@@ -1,5 +1,0 @@
-mysql:
-  server: localhost
-  username: root
-  password: 
-  base: creeperslab
