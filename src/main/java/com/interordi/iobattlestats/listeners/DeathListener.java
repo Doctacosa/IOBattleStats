@@ -159,21 +159,23 @@ public class DeathListener implements Listener {
 			if (lastDamage != null && lastDamage instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent)lastDamage;
 				
-				//If the damage came from a projectile, find said arrow's owner
-				if (nEvent.getDamager() instanceof Projectile) {
-					
-					final Projectile projectile = (Projectile)nEvent.getDamager();
-					Entity temp = (Entity)projectile.getShooter();
-					killerName = temp.getType().toString();
-					cause = Utilities.getDamagerType(nEvent.getDamager());
-					
-					//Use if telling apart players and mobs is needed
-					//if (arrow.getShooter() instanceof Player) {
-					//}
-				}
-				//Just a regular mob kill
-				else {
-					killerName = nEvent.getDamager().getType().toString();
+				if (nEvent.getDamager() != null) {
+					//If the damage came from a projectile, find said arrow's owner
+					if (nEvent.getDamager() instanceof Projectile) {
+						
+						final Projectile projectile = (Projectile)nEvent.getDamager();
+						Entity temp = (Entity)projectile.getShooter();
+						killerName = temp.getType().toString();
+						cause = Utilities.getDamagerType(nEvent.getDamager());
+						
+						//Use if telling apart players and mobs is needed
+						//if (arrow.getShooter() instanceof Player) {
+						//}
+					}
+					//Just a regular mob kill
+					else {
+						killerName = nEvent.getDamager().getType().toString();
+					}
 				}
 			}
 			//Other reason, whatever

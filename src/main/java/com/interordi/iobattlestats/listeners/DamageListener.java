@@ -55,9 +55,9 @@ public class DamageListener implements Listener {
 		if (damage == 0)
 			return;
 		
-		boolean playerSource = (event.getDamager() instanceof Player);
-		boolean playerTarget = (event.getEntity() instanceof Player);
-		boolean projectileSource = (event.getDamager() instanceof Projectile);
+		boolean playerSource = (event.getDamager() != null && event.getDamager() instanceof Player);
+		boolean playerTarget = (event.getEntity() != null && event.getEntity() instanceof Player);
+		boolean projectileSource = (event.getDamager() != null && event.getDamager() instanceof Projectile);
 		
 		//No human interaction = don't care
 		if (!playerSource && !playerTarget && !projectileSource) {
