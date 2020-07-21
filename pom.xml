@@ -5,8 +5,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>IOBattleStats</name>
   <description>Bukkit plugin, tracks a multitude of statistics</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>${project.basedir}/src/main/resources</directory>
