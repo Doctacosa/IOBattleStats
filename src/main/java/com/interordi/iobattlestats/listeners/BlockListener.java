@@ -77,7 +77,7 @@ public class BlockListener implements Listener {
 		String item = event.getItemDrop().getItemStack().getType().toString();
 		String name = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
 
-		this.plugin.data.recordItemNamedStat("item_dropped", event.getPlayer().getUniqueId(), item, name, 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordItemNamedStat("item_dropped", event.getPlayer().getUniqueId(), item, name, event.getItemDrop().getItemStack().getAmount(), event.getPlayer().getWorld().getName());
 	}
 
 
@@ -88,10 +88,10 @@ public class BlockListener implements Listener {
 		
 		String item = event.getItem().getItemStack().getType().toString();
 		String name = event.getItem().getItemStack().getItemMeta().getDisplayName();
-		
+
 		Player player = (Player)event.getEntity();
 		if (player.hasPermission("iobattlestats.track"))
-			this.plugin.data.recordItemNamedStat("item_picked_up", player.getUniqueId(), item, name, 1, player.getWorld().getName());
+			this.plugin.data.recordItemNamedStat("item_picked_up", player.getUniqueId(), item, name, event.getItem().getItemStack().getAmount(), player.getWorld().getName());
 	}
 
 
