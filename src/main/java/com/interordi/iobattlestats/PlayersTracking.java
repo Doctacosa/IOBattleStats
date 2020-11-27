@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class PlayersTracking {
 	
 	IOBattleStats plugin;
-	private Map< UUID , Location > locations = new HashMap< UUID, Location >();
+	private Map< UUID, Location > locations = new HashMap< UUID, Location >();
 	private Map< UUID, Integer > pvpStreaks = new HashMap< UUID, Integer>();
 	
 	
@@ -61,6 +61,12 @@ public class PlayersTracking {
 	//Get the list of kill streaks to save them
 	public Map< UUID, Integer > getKillStreaks() {
 		return pvpStreaks;
+	}
+
+
+	//Set a player's current PvP streak
+	public void setKillStreak(UUID player, int amount) {
+		pvpStreaks.put(player, amount);
 	}
 	
 

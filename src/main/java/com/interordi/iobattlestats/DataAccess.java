@@ -3,7 +3,7 @@ package com.interordi.iobattlestats;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -302,5 +302,42 @@ public class DataAccess implements Runnable {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
+	}
+
+
+	//Get a player's current PvP streak
+	public int getPvPStreak(UUID player) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		int streak = 0;
+		
+		try {
+			conn = DriverManager.getConnection(database);
+			
+			pstmt = conn.prepareStatement("" +
+				"SELECT value " + 
+				"FROM " + this.tablePrefix + "pvp_streak " +
+				"WHERE uuid = ? "
+			);
+			
+			pstmt.setString(1, player.toString());
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				streak = rs.getInt("value");
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			// handle any errors
+			System.out.println("Query: " + query);
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		}
+
+		return streak;
 	}
 }
