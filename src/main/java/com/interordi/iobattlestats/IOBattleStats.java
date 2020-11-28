@@ -26,32 +26,35 @@ public class IOBattleStats extends JavaPlugin {
 		//Always ensure we've got a copy of the config in place (does not overwrite existing)
 		this.saveDefaultConfig();
 		
+		boolean enable = true;
+
 		//Configuration file use (config.yml): http://wiki.bukkit.org/Configuration_API_Reference
 		String dbServer = this.getConfig().getString("mysql.server");
 		String dbUsername = this.getConfig().getString("mysql.username");
 		String dbPassword = this.getConfig().getString("mysql.password");
 		String dbBase = this.getConfig().getString("mysql.base");
+		if (this.getConfig().contains("enable"))
+			enable = this.getConfig().getBoolean("enable");
 		
-		new BasicListener(this);
-		new BlockListener(this);
-		new ChatListener(this);
-		new DamageListener(this);
-		new DeathListener(this);
-		new LoginListener(this);
-		PlayersMove playersMove = new PlayersMove(this);
+		new LoginListener(this, enable);
+
+		if (enable) {
+			new BasicListener(this);
+			new BlockListener(this);
+			new ChatListener(this);
+			new DamageListener(this);
+			new DeathListener(this);
+
+			PlayersMove playersMove = new PlayersMove(this);
+			
+			//Check for player movements every so often
+			tracker = new PlayersTracking(this);
+			getServer().getScheduler().scheduleSyncRepeatingTask(this, playersMove, 10*20L, 10*20L);
+		}
 		
+		//Save every minute
 		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
 		getServer().getScheduler().runTaskTimerAsynchronously(this, data, 60*20L, 60*20L);	//Run every minute
-		
-		tracker = new PlayersTracking(this);
-		/*
-		MyCommandExecutor executor = new MyCommandExecutor(this);
-		getCommand("basic").setExecutor(executor);
-		getCommand("basic2").setExecutor(executor);
-		*/
-		
-		//Check for player movements every so often
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, playersMove, 10*20L, 10*20L);
 		
 		getLogger().info("IOBattleStats enabled");
 	}
