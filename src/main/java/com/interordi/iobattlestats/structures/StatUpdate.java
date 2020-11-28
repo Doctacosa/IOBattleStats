@@ -11,6 +11,7 @@ public class StatUpdate {
 	public String world;
 	public String value;
 	public String name;
+	public String extra;
 	
 	public static final int BASIC = 1;
 	public static final int VALUE = 2;
@@ -46,6 +47,11 @@ public class StatUpdate {
 
 	public StatUpdate() {
 		
+	}
+
+
+	public void setExtra(String extra) {
+		this.extra = extra;
 	}
 
 }

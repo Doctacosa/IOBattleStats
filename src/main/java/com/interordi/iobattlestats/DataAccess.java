@@ -93,8 +93,10 @@ public class DataAccess implements Runnable {
 	
 	
 	//Record a player's name and UUID
-	public void recordPlayer(UUID uuid, String name) {
-		basicStats.add(new StatUpdate(StatUpdate.PLAYER, "players", uuid, name));
+	public void recordPlayer(UUID uuid, String name, String ip) {
+		StatUpdate playerData = new StatUpdate(StatUpdate.PLAYER, "players", uuid, name);
+		playerData.setExtra(ip);
+		basicStats.add(playerData);
 	}
 
 
@@ -139,7 +141,7 @@ public class DataAccess implements Runnable {
 			if (tableStats == null)
 				tableStats = new HashMap< StatKey, Integer >();
 			
-			StatKey thisStat = new StatKey(entry.uuid, entry.world, entry.value, entry.name);
+			StatKey thisStat = new StatKey(entry.uuid, entry.world, entry.value, entry.name, entry.extra);
 			int newAmount = entry.amount;
 			if (tableStats.containsKey(thisStat))
 				newAmount += tableStats.get(thisStat);
@@ -241,9 +243,9 @@ public class DataAccess implements Runnable {
 							"VALUES (?, ?, ?, ?, ?) " +
 							"ON DUPLICATE KEY UPDATE amount = amount + ?";
 				else if (format == StatUpdate.PLAYER)
-					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, name)" + 
-							"VALUES (?, ?) " +
-							"ON DUPLICATE KEY UPDATE name = ?";
+					query = "INSERT INTO " + this.tablePrefix + table + " (uuid, name, ip)" + 
+							"VALUES (?, ?, ?) " +
+							"ON DUPLICATE KEY UPDATE name = ?, ip = ?";
 				
 				pstmt = conn.prepareStatement(query);
 				
@@ -266,7 +268,9 @@ public class DataAccess implements Runnable {
 						pstmt.setInt(6, entry.getValue());
 					} else if (format == StatUpdate.PLAYER) {
 						pstmt.setString(2, entry.getKey().value);
-						pstmt.setString(3, entry.getKey().value);
+						pstmt.setString(3, entry.getKey().extra);
+						pstmt.setString(4, entry.getKey().value);
+						pstmt.setString(5, entry.getKey().extra);
 					}
 					
 					@SuppressWarnings("unused")
