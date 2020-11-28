@@ -67,12 +67,16 @@ public class IOBattleStats extends JavaPlugin {
 	
 	
 	public void addPlayer(Player player) {
+		if (this.tracker == null)
+			return;
 		this.tracker.add(player);
 		this.data.loadStats(player);
 	}
 	
 	
 	public void removePlayer(Player player) {
+		if (this.tracker == null)
+			return;
 		this.data.saveStats(player);
 		this.tracker.remove(player);
 	}
