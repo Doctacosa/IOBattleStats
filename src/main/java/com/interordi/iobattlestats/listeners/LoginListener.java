@@ -25,7 +25,10 @@ public class LoginListener implements Listener {
 	@EventHandler	//Annotation - EventPriority.NORMAL by default
 	public void onPlayerLogin(PlayerJoinEvent event) {
 		this.plugin.addPlayer(event.getPlayer());
-		this.plugin.data.recordPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName(), event.getPlayer().getAddress().getAddress().toString());
+		String ip = event.getPlayer().getAddress().getAddress().toString();
+		if (ip.startsWith("/"))
+			ip = ip.substring(1);
+		this.plugin.data.recordPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName(), ip);
 		
 		if (!enable || !event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
