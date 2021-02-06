@@ -303,10 +303,8 @@ public class DataAccess implements Runnable {
 			
 		} catch (SQLException ex) {
 			// handle any errors
-			System.out.println("Query: " + query);
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			System.out.println("Query error for " + plugin.getName() + ": " + query);
+			System.out.println("Error " + ex.getErrorCode() + ": " + ex.getMessage());
 		}
 	}
 
@@ -338,10 +336,8 @@ public class DataAccess implements Runnable {
 			rs.close();
 		} catch (SQLException ex) {
 			// handle any errors
-			System.out.println("Query: " + query);
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			System.out.println("Query error for " + plugin.getName() + ": " + query);
+			System.out.println("Error " + ex.getErrorCode() + ": " + ex.getMessage());
 		}
 
 		return streak;
