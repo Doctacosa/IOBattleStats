@@ -36,6 +36,16 @@ public class IOBattleStats extends JavaPlugin {
 		if (this.getConfig().contains("enable"))
 			enable = this.getConfig().getBoolean("enable");
 		
+		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
+		if (!data.init()) {
+			System.err.println("---------------------------------");
+			System.err.println("Failed to initialize the database");
+			System.err.println("Make sure to configure config.yml");
+			System.err.println("---------------------------------");
+			enable = false;
+			return;
+		}
+
 		new LoginListener(this, enable);
 
 		if (enable) {
@@ -52,8 +62,6 @@ public class IOBattleStats extends JavaPlugin {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this, playersMove, 10*20L, 10*20L);
 		}
 		
-		//Save every minute
-		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
 		getServer().getScheduler().runTaskTimerAsynchronously(this, data, 60*20L, 60*20L);	//Run every minute
 		
 		getLogger().info("IOBattleStats enabled");

@@ -36,6 +36,322 @@ public class DataAccess implements Runnable {
 	}
 	
 	
+	//Initialize the database
+	public boolean init() {
+
+		//Create or update the required database table
+		//A failure indicates that the database wasn't configured properly
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String query = "";
+		
+		try {
+			conn = DriverManager.getConnection(database);
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_arrows` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_beds_entered` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_blocks_broken` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_blocks_placed` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_buckets_emptied` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_buckets_filled` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_change_world` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_chat_words` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_commands` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_consumed` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_crafted` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `name` varchar(50) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_damage` ( " +
+				"  `source` varchar(36) NOT NULL, " +
+				"  `target` varchar(36) NOT NULL, " +
+				"  `world` varchar(50) NOT NULL, " +
+				"  `cause` varchar(36) NOT NULL, " +
+				"  `weapon_name` varchar(50) NOT NULL, " +
+				"  `damage` float NOT NULL, " +
+				"  `player_source` tinyint(1) NOT NULL, " +
+				"  `player_target` tinyint(1) NOT NULL, " +
+				"  PRIMARY KEY (`source`,`target`,`world`,`cause`,`weapon_name`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_deaths` ( " +
+				"  `source` varchar(36) NOT NULL, " +
+				"  `target` varchar(36) NOT NULL, " +
+				"  `world` varchar(50) NOT NULL, " +
+				"  `cause` varchar(36) NOT NULL, " +
+				"  `weapon_name` varchar(50) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `player_source` tinyint(1) NOT NULL, " +
+				"  `player_target` tinyint(1) NOT NULL, " +
+				"  KEY `main` (`source`,`target`,`world`,`cause`,`weapon_name`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_eggs_thrown` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_fish_caught` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_item_broken` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_item_dropped` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `name` varchar(50) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_item_picked_up` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(36) NOT NULL, " +
+				"  `name` varchar(50) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_joins` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_kicks` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_move` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_players` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `name` varchar(16) NOT NULL, " +
+				"  `ip` varchar(16) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_pvp_streak` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `value` int(11) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_shears` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_teleports` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_trades` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `name` varchar(50) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `stats_io_xp_gained` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+
+		} catch (SQLException ex) {
+			System.out.println("Query: " + query);
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return false;
+		}
+
+		return true;
+	}
+
+	
 	public void recordDamage(String source, String target, String world, float damage, String cause, String weaponName, boolean playerSource, boolean playerTarget) {
 		
 		int isPlayerSource = (playerSource) ? 1 : 0;
