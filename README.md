@@ -4,10 +4,11 @@ Record various gameplay stats on a Minecraft server to better track the activity
 
 ## Configuration
 
-`mysql.server`: Database host  
-`mysql.username`: Database username  
-`mysql.password`: Database password  
-`mysql.base`: Database name  
+`database.host`: Database host  
+`database.port`: Database port  
+`database.base`: Database name  
+`database.username`: Database username  
+`database.password`: Database password  
 
 
 ## Commands
