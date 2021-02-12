@@ -29,14 +29,26 @@ public class IOBattleStats extends JavaPlugin {
 		boolean enable = true;
 
 		//Configuration file use (config.yml): http://wiki.bukkit.org/Configuration_API_Reference
-		String dbServer = this.getConfig().getString("mysql.server");
-		String dbUsername = this.getConfig().getString("mysql.username");
-		String dbPassword = this.getConfig().getString("mysql.password");
-		String dbBase = this.getConfig().getString("mysql.base");
+		String dbHost = this.getConfig().getString("database.host");
+		int dbPort = this.getConfig().getInt("database.port");
+		String dbUsername = this.getConfig().getString("database.username");
+		String dbPassword = this.getConfig().getString("database.password");
+		String dbBase = this.getConfig().getString("database.base");
+
+		//Old config format
+		if (dbHost == null)
+			dbHost = this.getConfig().getString("mysql.server");
+		if (dbUsername == null)
+			dbUsername = this.getConfig().getString("mysql.username");
+		if (dbPassword == null)
+			dbPassword = this.getConfig().getString("mysql.password");
+		if (dbBase == null)
+			dbBase = this.getConfig().getString("mysql.base");
+
 		if (this.getConfig().contains("enable"))
 			enable = this.getConfig().getBoolean("enable");
 		
-		data = new DataAccess(this, dbServer, dbUsername, dbPassword, dbBase);
+		data = new DataAccess(this, dbHost, dbPort, dbUsername, dbPassword, dbBase);
 		if (!data.init()) {
 			System.err.println("---------------------------------");
 			System.err.println("Failed to initialize the database");

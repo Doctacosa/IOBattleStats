@@ -29,10 +29,10 @@ public class DataAccess implements Runnable {
 	private Vector< StatUpdate > basicStats = new Vector< StatUpdate >();
 	
 	
-	DataAccess(IOBattleStats plugin, String dbServer, String dbUsername, String dbPassword, String dbBase) {
+	DataAccess(IOBattleStats plugin, String dbHost, int dbPort, String dbUsername, String dbPassword, String dbBase) {
 		this.plugin = plugin;
 		
-		database = "jdbc:mysql://" + dbServer + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword + "&useSSL=false";
+		database = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbBase + "?user=" + dbUsername + "&password=" + dbPassword + "&useSSL=false";
 	}
 	
 	
