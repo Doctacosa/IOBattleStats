@@ -71,7 +71,7 @@ public class BlockListener implements Listener {
 			ItemStack[] itemGrid = event.getClickedInventory().getContents();
 			for (int i = 1; i < itemGrid.length; i++) {
 				ItemStack is = itemGrid[i];
-				if (itemGrid == null || is.getType().equals(Material.AIR))
+				if (itemGrid == null || is == null || is.getType().equals(Material.AIR))
 					continue;
 
 				if (itemsChecked == 0) {
