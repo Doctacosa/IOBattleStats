@@ -27,6 +27,9 @@ public class DataAccess implements Runnable {
 	private Map< BattleKey, Integer > deaths = new HashMap< BattleKey, Integer>();
 	
 	private Vector< StatUpdate > basicStats = new Vector< StatUpdate >();
+
+	//The maximum length of item names to save
+	private static final int maxNameLength = 100;
 	
 	
 	DataAccess(IOBattleStats plugin, String dbHost, int dbPort, String dbUsername, String dbPassword, String dbBase) {
@@ -505,7 +508,7 @@ public class DataAccess implements Runnable {
 				pstmt.setString(3, bk.world);
 				pstmt.setString(4, bk.cause);
 				pstmt.setFloat(5, val);
-				pstmt.setString(6, bk.weaponName);
+				pstmt.setString(6, bk.weaponName.substring(0, maxNameLength));
 				pstmt.setInt(7, bk.isPlayerSource);
 				pstmt.setInt(8, bk.isPlayerTarget);
 				pstmt.setFloat(9, val);
@@ -531,7 +534,7 @@ public class DataAccess implements Runnable {
 				pstmt.setString(3, bk.world);
 				pstmt.setString(4, bk.cause);
 				pstmt.setFloat(5, val);
-				pstmt.setString(6, bk.weaponName);
+				pstmt.setString(6, bk.weaponName.substring(0, maxNameLength));
 				pstmt.setInt(7, bk.isPlayerSource);
 				pstmt.setInt(8, bk.isPlayerTarget);
 				pstmt.setFloat(9, val);
@@ -580,7 +583,7 @@ public class DataAccess implements Runnable {
 						pstmt.setString(2, entry.getKey().world);
 						pstmt.setInt(3, entry.getValue());
 						pstmt.setString(4, entry.getKey().value);
-						pstmt.setString(5, entry.getKey().name);
+						pstmt.setString(5, entry.getKey().name.substring(0, maxNameLength));
 						pstmt.setInt(6, entry.getValue());
 					} else if (format == StatUpdate.PLAYER) {
 						pstmt.setString(2, entry.getKey().value);
