@@ -502,13 +502,16 @@ public class DataAccess implements Runnable {
 			for (Map.Entry< BattleKey, Float > entry : damagesCopy.entrySet()) {
 				BattleKey bk = entry.getKey();
 				Float val = entry.getValue();
+				String weaponName = bk.weaponName;
+				if (weaponName.length() > 100)
+					weaponName = weaponName.substring(0, maxNameLength);
 				
 				pstmt.setString(1, bk.source);
 				pstmt.setString(2, bk.target);
 				pstmt.setString(3, bk.world);
 				pstmt.setString(4, bk.cause);
 				pstmt.setFloat(5, val);
-				pstmt.setString(6, bk.weaponName.substring(0, maxNameLength));
+				pstmt.setString(6, weaponName);
 				pstmt.setInt(7, bk.isPlayerSource);
 				pstmt.setInt(8, bk.isPlayerTarget);
 				pstmt.setFloat(9, val);
@@ -528,13 +531,16 @@ public class DataAccess implements Runnable {
 			for (Map.Entry< BattleKey, Integer > entry : deathsCopy.entrySet()) {
 				BattleKey bk = entry.getKey();
 				Integer val = entry.getValue();
+				String weaponName = bk.weaponName;
+				if (weaponName.length() > 100)
+					weaponName = weaponName.substring(0, maxNameLength);
 				
 				pstmt.setString(1, bk.source);
 				pstmt.setString(2, bk.target);
 				pstmt.setString(3, bk.world);
 				pstmt.setString(4, bk.cause);
 				pstmt.setFloat(5, val);
-				pstmt.setString(6, bk.weaponName.substring(0, maxNameLength));
+				pstmt.setString(6, weaponName);
 				pstmt.setInt(7, bk.isPlayerSource);
 				pstmt.setInt(8, bk.isPlayerTarget);
 				pstmt.setFloat(9, val);
@@ -580,10 +586,14 @@ public class DataAccess implements Runnable {
 						pstmt.setString(4, entry.getKey().value);
 						pstmt.setInt(5, entry.getValue());
 					} else if (format == StatUpdate.NAMED) {
+						String itemName = entry.getKey().name;
+						if (itemName.length() > 100)
+							itemName = itemName.substring(0, maxNameLength);
+		
 						pstmt.setString(2, entry.getKey().world);
 						pstmt.setInt(3, entry.getValue());
 						pstmt.setString(4, entry.getKey().value);
-						pstmt.setString(5, entry.getKey().name.substring(0, maxNameLength));
+						pstmt.setString(5, itemName);
 						pstmt.setInt(6, entry.getValue());
 					} else if (format == StatUpdate.PLAYER) {
 						pstmt.setString(2, entry.getKey().value);
