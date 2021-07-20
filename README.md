@@ -1,4 +1,7 @@
 # IOBattleStats
+
+![Logo](https://www.interordi.com/images/plugins/iobattlestats-96.png)
+
 Record various gameplay stats on a Minecraft server to better track the activity of the players. This is logged to a MySQL database and can then be used for other purposes like finding sources of griefing, grant rewards for completing tasks, build player profiles, or anything of your choosing.
 
 
