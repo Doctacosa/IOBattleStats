@@ -28,7 +28,6 @@ For example, the more complex stats_io_deaths:
 `player_target`: if it was a player that died  
 
 
-
 ## Database tables and tracked values
 
 All table names are prefixed with `stats_io_` to avoid naming conflicts with other plugins.
