@@ -124,7 +124,8 @@ public class IOBattleStats extends JavaPlugin {
 				else
 					targetName = args[0];
 			} else {
-				if (user != null)	user.sendMessage("You need to specify a player name.");
+				sender.sendMessage("You need to specify a player name.");
+				return true;
 			}
 			
 			//Check if the user has permission to use this command
