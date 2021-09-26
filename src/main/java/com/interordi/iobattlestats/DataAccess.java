@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.interordi.iobattlestats.structures.BattleKey;
@@ -18,7 +19,7 @@ import com.interordi.iobattlestats.structures.StatUpdate;
 
 public class DataAccess implements Runnable {
 
-	 @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private IOBattleStats plugin;
 	private String database = "";
 	private String tablePrefix = "stats_io_";
@@ -344,10 +345,10 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
-			System.out.println("Query: " + query);
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			Bukkit.getLogger().severe("Query: " + query);
+			Bukkit.getLogger().severe("SQLException: " + ex.getMessage());
+			Bukkit.getLogger().severe("SQLState: " + ex.getSQLState());
+			Bukkit.getLogger().severe("VendorError: " + ex.getErrorCode());
 			return false;
 		}
 
@@ -362,7 +363,7 @@ public class DataAccess implements Runnable {
 		
 		BattleKey bk = new BattleKey(source, target, world, cause, weaponName, isPlayerSource, isPlayerTarget);
 		
-		//System.out.println("Damage: " + bk.toString());
+		//Bukkit.getLogger().info("Damage: " + bk.toString());
 		
 		Float val = damages.get(bk);
 		if (val == null)
@@ -381,7 +382,7 @@ public class DataAccess implements Runnable {
 		
 		BattleKey bk = new BattleKey(source, target, world, cause, weaponName, isPlayerSource, isPlayerTarget);
 		
-		//System.out.println(" Death: " + bk.toString());
+		//Bukkit.getLogger().info(" Death: " + bk.toString());
 		
 		Integer val = deaths.get(bk);
 		if (val == null)
@@ -487,9 +488,9 @@ public class DataAccess implements Runnable {
 			if (false) {
 				ResultSet rs = stmt.executeQuery("SELECT * FROM Stats_io_damage");
 				
-				System.out.println("Query result: " + rs);
+				Bukkit.getLogger().info("Query result: " + rs);
 				while (rs.next()) {
-					System.out.println(rs.getString("source") + " -> " + rs.getString("target") + ": " + rs.getFloat("damage"));
+					Bukkit.getLogger().info(rs.getString("source") + " -> " + rs.getString("target") + ": " + rs.getFloat("damage"));
 					
 					//int x = rs.getInt("a");
 					//String s = rs.getString("b");
@@ -518,7 +519,6 @@ public class DataAccess implements Runnable {
 				
 				@SuppressWarnings("unused")
 				int res = pstmt.executeUpdate();
-				//System.out.println("Nb updates: " + res);
 			}
 			
 			
@@ -632,8 +632,8 @@ public class DataAccess implements Runnable {
 			
 		} catch (SQLException ex) {
 			// handle any errors
-			System.out.println("Query error for " + plugin.getName() + ": " + query);
-			System.out.println("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+			Bukkit.getLogger().severe("Query error for " + plugin.getName() + ": " + query);
+			Bukkit.getLogger().severe("Error " + ex.getErrorCode() + ": " + ex.getMessage());
 		}
 	}
 
@@ -665,8 +665,8 @@ public class DataAccess implements Runnable {
 			rs.close();
 		} catch (SQLException ex) {
 			// handle any errors
-			System.out.println("Query error for " + plugin.getName() + ": " + query);
-			System.out.println("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+			Bukkit.getLogger().severe("Query error for " + plugin.getName() + ": " + query);
+			Bukkit.getLogger().severe("Error " + ex.getErrorCode() + ": " + ex.getMessage());
 		}
 
 		return streak;

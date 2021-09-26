@@ -50,10 +50,10 @@ public class IOBattleStats extends JavaPlugin {
 
 		data = new DataAccess(this, dbHost, dbPort, dbUsername, dbPassword, dbBase);
 		if (!data.init()) {
-			System.err.println("---------------------------------");
-			System.err.println("Failed to initialize the database");
-			System.err.println("Make sure to configure config.yml");
-			System.err.println("---------------------------------");
+			Bukkit.getLogger().severe("---------------------------------");
+			Bukkit.getLogger().severe("Failed to initialize the database");
+			Bukkit.getLogger().severe("Make sure to configure config.yml");
+			Bukkit.getLogger().severe("---------------------------------");
 			enable = false;
 			return;
 		}
