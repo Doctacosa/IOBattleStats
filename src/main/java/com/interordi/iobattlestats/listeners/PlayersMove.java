@@ -59,10 +59,14 @@ public class PlayersMove implements Runnable, Listener {
 							type = "pig";
 						else if (vehicle.getType() == EntityType.LLAMA)
 							type = "llama";
+						else if (vehicle.getType() == EntityType.STRIDER)
+							type = "strider";
 						else if (vehicle.getType() == EntityType.BOAT)
 							type = "boat";
-						else
+						else if (vehicle.getType() == EntityType.MINECART)
 							type = "minecart";
+						else
+							type = vehicle.getType().name().toLowerCase();
 					}
 					else
 						type = "walk";
