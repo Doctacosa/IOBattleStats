@@ -14,6 +14,8 @@ import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
 import com.interordi.iobattlestats.listeners.LoginListener;
 import com.interordi.iobattlestats.listeners.PlayersMove;
+import com.interordi.iobattlestats.utilities.CommandTargets;
+import com.interordi.iobattlestats.utilities.Commands;
 import com.interordi.iobattlestats.utilities.Heads;
 
 
@@ -103,9 +105,33 @@ public class IOBattleStats extends JavaPlugin {
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		//Get the list of potential targets if a selector was used
+		CommandTargets results = Commands.findTargets(Bukkit.getServer(), sender, cmd, label, args);
+		
+		boolean result = false;
+		if (results.position != -1) {
+			//Run the command for each target identified by the selector
+			for (String target : results.targets) {
+				args[results.position] = target;
+				
+				result = runCommand(sender, cmd, label, args);
+			}
+		} else {
+			//Run the command as-is
+			result = runCommand(sender, cmd, label, args);
+		}
+		
+		return result;
+	}
+	
+	
+	//Actually run the entered command
+	@SuppressWarnings("deprecation")
+	public boolean runCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
 		if (cmd.getName().equalsIgnoreCase("givehead")) {
 			
 			//Only players can run this command
@@ -139,7 +165,12 @@ public class IOBattleStats extends JavaPlugin {
 
 			} else if (args.length >= 2) {
 				giveTo = Bukkit.getServer().getPlayer(args[0]);
-				targetName = args[1];
+
+				try {
+					amount = Integer.parseInt(args[1]);
+				} catch (NumberFormatException e) {
+					targetName = args[1];
+				}
 
 			} else if (args.length >= 1) {
 				targetName = args[0];
