@@ -1,6 +1,7 @@
 package com.interordi.iobattlestats;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -114,29 +115,49 @@ public class IOBattleStats extends JavaPlugin {
 			if (!isConsole)
 				user = (Player)sender;
 			
-			//Select the target of the command
-			Player target = null;
-			String targetName = "";
-			if (args.length >= 1) {
-				target = Bukkit.getServer().getPlayer(args[0]);
-				if (target != null)
-					targetName = target.getDisplayName();
-				else
-					targetName = args[0];
-			} else {
-				sender.sendMessage("You need to specify a player name.");
-				return true;
-			}
-			
 			//Check if the user has permission to use this command
 			if (!isConsole && !user.hasPermission("iobattlestats.givehead")) {
-				user.sendMessage("You would like that, wouldn't you.");
+				user.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
 				return true;
 			}
 			
-			user.sendMessage("Here's some head.");
+			//Select the target of the command
+			Player headOf = null;
+			Player giveTo = user;
+			String targetName = "";
+			int amount = 1;
+			if (args.length >= 3) {
+				giveTo = Bukkit.getServer().getPlayer(args[0]);
+				targetName = args[1];
+
+				try {
+					amount = Integer.parseInt(args[2]);
+				} catch (NumberFormatException e) {
+					sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number.");
+					return true;
+				}
+
+			} else if (args.length >= 2) {
+				giveTo = Bukkit.getServer().getPlayer(args[0]);
+				targetName = args[1];
+
+			} else if (args.length >= 1) {
+				targetName = args[0];
+			} else {
+				sender.sendMessage(ChatColor.RED + "You need to specify a player name.");
+				return true;
+			}
+
+			if (giveTo == null) {
+				sender.sendMessage(ChatColor.RED + "The target player is offline.");
+				return true;
+			}
+
+			headOf = Bukkit.getServer().getPlayer(targetName);
+			if (headOf != null)
+				targetName = headOf.getDisplayName();
 			
-			Heads.giveToPlayer(Bukkit.getOfflinePlayer(targetName), user);
+			Heads.giveToPlayer(Bukkit.getOfflinePlayer(targetName), giveTo, amount);
 			
 			return true;
 		}
