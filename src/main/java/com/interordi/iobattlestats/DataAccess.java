@@ -53,7 +53,7 @@ public class DataAccess implements Runnable {
 			conn = DriverManager.getConnection(database);
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_arrows` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "arrows` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -64,7 +64,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_beds_entered` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "beds_entered` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -74,7 +74,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_blocks_broken` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "blocks_broken` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -85,7 +85,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_blocks_placed` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "blocks_placed` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -96,7 +96,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_buckets_emptied` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "buckets_emptied` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -106,7 +106,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_buckets_filled` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "buckets_filled` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -116,7 +116,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_change_world` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "change_world` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -126,7 +126,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_chat_words` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "chat_words` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -136,7 +136,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_commands` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "commands` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -146,7 +146,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_consumed` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "consumed` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -156,7 +156,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_crafted` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "crafted` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -168,7 +168,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_damage` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "damage` ( " +
 				"  `source` varchar(36) NOT NULL, " +
 				"  `target` varchar(36) NOT NULL, " +
 				"  `world` varchar(50) NOT NULL, " +
@@ -183,7 +183,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_deaths` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "deaths` ( " +
 				"  `source` varchar(36) NOT NULL, " +
 				"  `target` varchar(36) NOT NULL, " +
 				"  `world` varchar(50) NOT NULL, " +
@@ -198,7 +198,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_eggs_thrown` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "eggs_thrown` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -208,7 +208,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_fish_caught` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "fish_caught` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -218,7 +218,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_item_broken` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "item_broken` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -229,7 +229,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_item_dropped` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "item_dropped` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -241,7 +241,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_item_picked_up` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "item_picked_up` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(36) NOT NULL, " +
@@ -253,7 +253,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_joins` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "joins` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -263,7 +263,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_kicks` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "kicks` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -273,7 +273,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_move` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "move` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(20) NOT NULL, " +
@@ -284,7 +284,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_players` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "players` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `name` varchar(16) NOT NULL, " +
 				"  `ip` varchar(16) NOT NULL, " +
@@ -294,7 +294,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_pvp_streak` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "pvp_streak` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `value` int(11) NOT NULL, " +
 				"  PRIMARY KEY (`uuid`) " +
@@ -303,7 +303,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_shears` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "shears` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -313,7 +313,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_teleports` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "teleports` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
@@ -323,7 +323,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_trades` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "trades` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(20) NOT NULL, " +
@@ -335,7 +335,7 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
-				"CREATE TABLE IF NOT EXISTS `stats_io_xp_gained` ( " +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "xp_gained` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
