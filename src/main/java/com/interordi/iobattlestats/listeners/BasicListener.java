@@ -126,20 +126,22 @@ public class BasicListener implements Listener {
 	
 	
 	@EventHandler
-	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-		if (event.getEntity().getShooter() instanceof Player) {
-			Player player = (Player)event.getEntity().getShooter();
-			//TODO: Track arrow types as the value
-			if (player.hasPermission("iobattlestats.track"))
-				this.plugin.data.recordItemStat("arrows", player.getUniqueId(), "", 1, player.getWorld().getName());
-		}
-	}
-	
-	
-	@EventHandler
 	public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
 		if (!event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
 		this.plugin.data.recordBasicStat("change_world", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
+	}
+	
+	
+	@EventHandler
+	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
+		if (!(event.getEntity().getShooter() instanceof Player))
+			return;
+		Player player = (Player)event.getEntity().getShooter();
+		if (!player.hasPermission("iobattlestats.track"))
+			return;
+
+		//TODO: Track arrow types as the value
+		this.plugin.data.recordItemStat("arrows", player.getUniqueId(), "", 1, player.getWorld().getName());
 	}
 }
