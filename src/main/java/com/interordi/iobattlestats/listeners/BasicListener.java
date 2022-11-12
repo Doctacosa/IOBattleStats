@@ -3,7 +3,10 @@ package com.interordi.iobattlestats.listeners;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -134,7 +137,25 @@ public class BasicListener implements Listener {
 	
 	
 	@EventHandler
+	public void onEnchantItemEvent(EnchantItemEvent event) {
+		if (!event.getEnchanter().hasPermission("iobattlestats.track"))
+			return;
+		this.plugin.data.recordItemNamedStat("enchants", event.getEnchanter().getUniqueId(), event.getItem().getType().toString(), event.getItem().getType().getKey().toString(), 1, event.getEnchanter().getWorld().getName());
+	}
+
+
+	@EventHandler
+	public void onInventoryOpenEvent(InventoryOpenEvent event) {
+		if (!event.getPlayer().hasPermission("iobattlestats.track"))
+			return;
+
+		this.plugin.data.recordItemStat("inventories", event.getPlayer().getUniqueId(), event.getInventory().getType().toString(), 1, event.getPlayer().getWorld().getName());
+	}
+	
+	
+	@EventHandler
 	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
+		//TODO: Note infinity status in here
 		if (!(event.getEntity().getShooter() instanceof Player))
 			return;
 		Player player = (Player)event.getEntity().getShooter();
@@ -143,5 +164,17 @@ public class BasicListener implements Listener {
 
 		//TODO: Track arrow types as the value
 		this.plugin.data.recordItemStat("arrows", player.getUniqueId(), "", 1, player.getWorld().getName());
+	}
+	
+	
+	@EventHandler
+	public void onEntityTameEvent(EntityTameEvent event) {
+		if (!(event.getOwner() instanceof Player))
+			return;
+		Player player = (Player)event.getOwner();
+		if (!player.hasPermission("iobattlestats.track"))
+			return;
+
+		this.plugin.data.recordItemStat("tamings", player.getUniqueId(), event.getEntityType().toString(), 1, player.getWorld().getName());
 	}
 }

@@ -329,7 +329,7 @@ public class DataAccess implements Runnable {
 				"  `value` varchar(20) NOT NULL, " +
 				"  `name` varchar(100) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
-				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
 				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
 			);
 			pstmt.executeUpdate();
@@ -344,6 +344,40 @@ public class DataAccess implements Runnable {
 			);
 			pstmt.executeUpdate();
 
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "tamings` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "inventories` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "enchants` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `name` varchar(100) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
 		} catch (SQLException ex) {
 			Bukkit.getLogger().severe("Query: " + query);
 			Bukkit.getLogger().severe("SQLException: " + ex.getMessage());
