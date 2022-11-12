@@ -235,11 +235,10 @@ public class BasicListener implements Listener {
 		if (!player.hasPermission("iobattlestats.track"))
 			return;
 
-		//TODO: Track arrow types as the value
 		this.plugin.data.recordItemStat(
 			"arrows",
 			player.getUniqueId(),
-			"",
+			event.getEntity().getType().toString(),
 			1,
 			player.getWorld().getName()
 		);
