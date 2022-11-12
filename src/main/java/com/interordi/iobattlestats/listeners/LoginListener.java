@@ -28,12 +28,21 @@ public class LoginListener implements Listener {
 		String ip = event.getPlayer().getAddress().getAddress().toString();
 		if (ip.startsWith("/"))
 			ip = ip.substring(1);
-		this.plugin.data.recordPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName(), ip);
+		this.plugin.data.recordPlayer(
+			event.getPlayer().getUniqueId(),
+			event.getPlayer().getName(),
+			ip
+		);
 		
 		if (!enable || !event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
 		
-		this.plugin.data.recordBasicStat("joins", event.getPlayer().getUniqueId(), 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordBasicStat(
+			"joins",
+			event.getPlayer().getUniqueId(),
+			1,
+			event.getPlayer().getWorld().getName()
+		);
 
 		//Load appropriate stats
 		final UUID uuid = event.getPlayer().getUniqueId();

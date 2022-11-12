@@ -90,7 +90,15 @@ public class DeathListener implements Listener {
 				playerSource = true;
 				
 				if (killer.hasPermission("iobattlestats.track")) {
-					this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+					this.plugin.data.recordDeath(
+						killerName,
+						killedName,
+						killed.getWorld().getName(),
+						cause,
+						itemName,
+						playerSource,
+						playerTarget
+					);
 				}
 				
 			} else {
@@ -194,7 +202,15 @@ public class DeathListener implements Listener {
 		
 		if ((playerSource && killer.hasPermission("iobattlestats.track")) ||
 			(playerTarget && killed.hasPermission("iobattlestats.track"))) {
-			this.plugin.data.recordDeath(killerName, killedName, killed.getWorld().getName(), cause, itemName, playerSource, playerTarget);
+			this.plugin.data.recordDeath(
+				killerName,
+				killedName,
+				killed.getWorld().getName(),
+				cause,
+				itemName,
+				playerSource,
+				playerTarget
+			);
 		}
 	}
 	

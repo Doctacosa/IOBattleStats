@@ -133,7 +133,16 @@ public class DamageListener implements Listener {
 		if ((playerSource && attacker.hasPermission("iobattlestats.track")) ||
 			(playerTarget && target.hasPermission("iobattlestats.track"))) {
 			//Bukkit.getLogger().info("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by ENTITY through " + event.getCause());
-			this.plugin.data.recordDamage(attackerName, targetName, attacker.getWorld().getName(), damage, damageSource, weaponName, playerSource, playerTarget);
+			this.plugin.data.recordDamage(
+				attackerName,
+				targetName,
+				attacker.getWorld().getName(),
+				damage,
+				damageSource,
+				weaponName,
+				playerSource,
+				playerTarget
+			);
 		}
 	}
 	
@@ -155,7 +164,16 @@ public class DamageListener implements Listener {
 		
 		if (target.hasPermission("iobattlestats.track")) {
 			//Bukkit.getLogger().info("PLAYER " + target.getName() + ", " + event.getFinalDamage() + " damage by BLOCK through " + event.getCause());
-			this.plugin.data.recordDamage("BLOCK", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+			this.plugin.data.recordDamage(
+				"BLOCK",
+				targetName,
+				target.getWorld().getName(),
+				damage,
+				event.getCause().toString(),
+				"",
+				false,
+				true
+			);
 		}
 	}
 	
@@ -177,7 +195,16 @@ public class DamageListener implements Listener {
 		
 		if (target.hasPermission("iobattlestats.track")) {
 			//Bukkit.getLogger().info("PLAYER " + target + ", " + event.getFinalDamage() + " damage by OTHER through " + event.getCause());
-			this.plugin.data.recordDamage("OTHER", targetName, target.getWorld().getName(), damage, event.getCause().toString(), "", false, true);
+			this.plugin.data.recordDamage(
+				"OTHER",
+				targetName,
+				target.getWorld().getName(),
+				damage,
+				event.getCause().toString(),
+				"",
+				false,
+				true
+			);
 		}
 	}
 }

@@ -38,6 +38,11 @@ public class ChatListener implements Listener {
 		UUID uuid = event.getPlayer().getUniqueId();
 		int nbWords = event.getMessage().split("\\s").length;
 		
-		this.plugin.data.recordBasicStat("chat_words", uuid, nbWords, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordBasicStat(
+			"chat_words",
+			uuid,
+			nbWords,
+			event.getPlayer().getWorld().getName()
+		);
 	}
 }

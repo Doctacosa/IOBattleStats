@@ -71,7 +71,13 @@ public class PlayersMove implements Runnable, Listener {
 					else
 						type = "walk";
 					
-					this.plugin.data.recordItemStat("move", player.getUniqueId(), type, (int)Math.round(movement), player.getWorld().getName());
+					this.plugin.data.recordItemStat(
+						"move",
+						player.getUniqueId(),
+						type,
+						(int)Math.round(movement),
+						player.getWorld().getName()
+					);
 				}
 			}
 			

@@ -33,7 +33,13 @@ public class BlockListener implements Listener {
 		if (!event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
 		String block = event.getBlock().getBlockData().getMaterial().toString();
-		this.plugin.data.recordItemStat("blocks_broken", event.getPlayer().getUniqueId(), block, 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordItemStat(
+			"blocks_broken",
+			event.getPlayer().getUniqueId(),
+			block,
+			1,
+			event.getPlayer().getWorld().getName()
+		);
 	}
 
 
@@ -42,7 +48,13 @@ public class BlockListener implements Listener {
 		if (!event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
 		String block = event.getBlock().getBlockData().getMaterial().toString();
-		this.plugin.data.recordItemStat("blocks_placed", event.getPlayer().getUniqueId(), block, 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordItemStat(
+			"blocks_placed",
+			event.getPlayer().getUniqueId(),
+			block,
+			1,
+			event.getPlayer().getWorld().getName()
+		);
 	}
 
 
@@ -66,7 +78,7 @@ public class BlockListener implements Listener {
 			int itemsChecked = 0;
 			int possibleCreations = 1;
 			int amountPossible = 0;
-		   
+
 			//Exclude the first entry, it's the results slot
 			ItemStack[] itemGrid = event.getClickedInventory().getContents();
 			for (int i = 1; i < itemGrid.length; i++) {
@@ -108,9 +120,23 @@ public class BlockListener implements Listener {
 		if (event.getInventory().getType().equals(InventoryType.CRAFTING) ||
 			event.getInventory().getType().equals(InventoryType.WORKBENCH) ||
 			event.getInventory().getType().equals(InventoryType.STONECUTTER))
-			this.plugin.data.recordItemNamedStat("crafted", player.getUniqueId(), item, name, amount, player.getWorld().getName());
+			this.plugin.data.recordItemNamedStat(
+				"crafted",
+				player.getUniqueId(),
+				item,
+				name,
+				amount,
+				player.getWorld().getName()
+			);
 		else if (event.getInventory().getType().equals(InventoryType.MERCHANT))
-			this.plugin.data.recordItemNamedStat("trades", player.getUniqueId(), item, name, amount, player.getWorld().getName());
+			this.plugin.data.recordItemNamedStat(
+				"trades",
+				player.getUniqueId(),
+				item,
+				name,
+				amount,
+				player.getWorld().getName()
+			);
 	}
 
 
@@ -122,7 +148,14 @@ public class BlockListener implements Listener {
 		String item = event.getItemDrop().getItemStack().getType().toString();
 		String name = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
 
-		this.plugin.data.recordItemNamedStat("item_dropped", event.getPlayer().getUniqueId(), item, name, event.getItemDrop().getItemStack().getAmount(), event.getPlayer().getWorld().getName());
+		this.plugin.data.recordItemNamedStat(
+			"item_dropped",
+			event.getPlayer().getUniqueId(),
+			item,
+			name,
+			event.getItemDrop().getItemStack().getAmount(),
+			event.getPlayer().getWorld().getName()
+		);
 	}
 
 
@@ -136,7 +169,14 @@ public class BlockListener implements Listener {
 
 		Player player = (Player)event.getEntity();
 		if (player.hasPermission("iobattlestats.track"))
-			this.plugin.data.recordItemNamedStat("item_picked_up", player.getUniqueId(), item, name, event.getItem().getItemStack().getAmount(), player.getWorld().getName());
+			this.plugin.data.recordItemNamedStat(
+				"item_picked_up",
+				player.getUniqueId(),
+				item,
+				name,
+				event.getItem().getItemStack().getAmount(),
+				player.getWorld().getName()
+			);
 	}
 
 
@@ -145,6 +185,12 @@ public class BlockListener implements Listener {
 		if (!event.getPlayer().hasPermission("iobattlestats.track"))
 			return;
 		String item = event.getBrokenItem().getType().toString();
-		this.plugin.data.recordItemStat("item_broken", event.getPlayer().getUniqueId(), item, 1, event.getPlayer().getWorld().getName());
+		this.plugin.data.recordItemStat(
+			"item_broken",
+			event.getPlayer().getUniqueId(),
+			item,
+			1,
+			event.getPlayer().getWorld().getName()
+		);
 	}
 }
