@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -227,18 +227,17 @@ public class BasicListener implements Listener {
 	
 	
 	@EventHandler
-	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-		//TODO: Note infinity status in here
-		if (!(event.getEntity().getShooter() instanceof Player))
+	public void onEntityShootBowEvent(EntityShootBowEvent event) {
+		if (!(event.getEntity() instanceof Player))
 			return;
-		Player player = (Player)event.getEntity().getShooter();
+		Player player = (Player)event.getEntity();
 		if (!player.hasPermission("iobattlestats.track"))
 			return;
 
 		this.plugin.data.recordItemStat(
 			"arrows",
 			player.getUniqueId(),
-			event.getEntity().getType().toString(),
+			event.getProjectile().toString(),
 			1,
 			player.getWorld().getName()
 		);
