@@ -200,11 +200,16 @@ public class BasicListener implements Listener {
 	public void onEnchantItemEvent(EnchantItemEvent event) {
 		if (!event.getEnchanter().hasPermission("iobattlestats.track"))
 			return;
+
+		String itemName = "";
+		if (event.getItem() != null && event.getItem().getItemMeta() != null && event.getItem().getItemMeta().hasDisplayName())
+			itemName = event.getItem().getItemMeta().getDisplayName();
+
 		this.plugin.data.recordItemNamedStat(
 			"enchants",
 			event.getEnchanter().getUniqueId(),
 			event.getItem().getType().toString(),
-			event.getItem().getType().getKey().toString(),
+			itemName,
 			1,
 			event.getEnchanter().getWorld().getName()
 		);
