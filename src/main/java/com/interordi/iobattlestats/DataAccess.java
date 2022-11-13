@@ -367,7 +367,63 @@ public class DataAccess implements Runnable {
 			pstmt.executeUpdate();
 			
 			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "heals` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "hunger_refills` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "milk` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "splashes` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
 				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "enchants` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `name` varchar(100) NOT NULL, " +
+				"  `world` varchar(30) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`,`name`,`world`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "lighters` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
 				"  `value` varchar(20) NOT NULL, " +

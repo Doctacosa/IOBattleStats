@@ -43,7 +43,7 @@ public class PlayerInteractionsListener implements Listener {
 				itemName = sourceItem.getItemMeta().getDisplayName();
 
 			this.plugin.data.recordItemNamedStat(
-				"lighter",
+				"lighters",
 				player.getUniqueId(),
 				sourceMaterial.toString(),
 				itemName,

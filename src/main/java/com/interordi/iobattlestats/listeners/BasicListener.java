@@ -1,11 +1,15 @@
 package com.interordi.iobattlestats.listeners;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -19,6 +23,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffect;
 
 import com.interordi.iobattlestats.IOBattleStats;
 
@@ -265,4 +270,70 @@ public class BasicListener implements Listener {
 			player.getWorld().getName()
 		);
 	}
+	
+	
+	@EventHandler
+	public void onEntityRegainHealthEvent(EntityRegainHealthEvent event) {
+		if (!(event.getEntity() instanceof Player))
+			return;
+		Player player = (Player)event.getEntity();
+		if (!player.hasPermission("iobattlestats.track"))
+			return;
+
+		if (event.getAmount() <= 0)
+			return;
+
+		this.plugin.data.recordItemStat(
+			"heals",
+			player.getUniqueId(),
+			event.getRegainReason().toString(),
+			(int) event.getAmount(),
+			player.getWorld().getName()
+		);
+	}
+	
+	
+	@EventHandler
+	public void onFoodLevelChangeEvent(FoodLevelChangeEvent event) {
+		if (!(event.getEntity() instanceof Player))
+			return;
+		Player player = (Player)event.getEntity();
+		if (!player.hasPermission("iobattlestats.track"))
+			return;
+
+		int change = event.getFoodLevel() - player.getFoodLevel();
+		if (change <= 0)
+			return;
+
+		this.plugin.data.recordItemStat(
+			"hunger_refills",
+			player.getUniqueId(),
+			event.getItem().getType().toString(),
+			change,
+			player.getWorld().getName()
+		);
+	}
+
+
+	@EventHandler
+	public void onPotionSplashEvent(PotionSplashEvent event) {
+		for (LivingEntity target : event.getAffectedEntities()) {
+			if (!(target instanceof Player))
+				continue;
+			Player player = (Player)target;
+
+			//Save a record for each effect
+			for (PotionEffect effect : event.getPotion().getEffects()) {
+				this.plugin.data.recordItemStat(
+					"splashes",
+					player.getUniqueId(),
+					effect.getType().toString(),
+					1,
+					player.getWorld().getName()
+				);
+			}
+		}
+		
+	}
+
 }
