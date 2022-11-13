@@ -13,6 +13,7 @@ import com.interordi.iobattlestats.listeners.ChatListener;
 import com.interordi.iobattlestats.listeners.DamageListener;
 import com.interordi.iobattlestats.listeners.DeathListener;
 import com.interordi.iobattlestats.listeners.LoginListener;
+import com.interordi.iobattlestats.listeners.PlayerInteractionsListener;
 import com.interordi.iobattlestats.listeners.PlayersMove;
 import com.interordi.iobattlestats.utilities.CommandTargets;
 import com.interordi.iobattlestats.utilities.Commands;
@@ -69,6 +70,7 @@ public class IOBattleStats extends JavaPlugin {
 			new ChatListener(this);
 			new DamageListener(this);
 			new DeathListener(this);
+			new PlayerInteractionsListener(this);
 
 			PlayersMove playersMove = new PlayersMove(this);
 			
