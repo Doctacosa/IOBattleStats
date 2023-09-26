@@ -50,6 +50,20 @@ public class PlayerInteractionsListener implements Listener {
 				1,
 				player.getWorld().getName()
 			);
+		
+		} else if (sourceMaterial == Material.ENDER_PEARL) {
+			String itemName = "";
+			if (sourceItem != null && sourceItem.getItemMeta() != null && sourceItem.getItemMeta().hasDisplayName())
+				itemName = sourceItem.getItemMeta().getDisplayName();
+
+			this.plugin.data.recordItemNamedStat(
+				"enderpearls",
+				player.getUniqueId(),
+				sourceMaterial.toString(),
+				itemName,
+				1,
+				player.getWorld().getName()
+			);
 		}
 		
 	}
