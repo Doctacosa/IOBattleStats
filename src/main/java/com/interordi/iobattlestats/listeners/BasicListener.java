@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
@@ -333,7 +334,19 @@ public class BasicListener implements Listener {
 				);
 			}
 		}
-		
+	}
+
+
+	@EventHandler
+	public void onPlayerLevelChangeEvent(PlayerLevelChangeEvent event) {
+		if (event.getNewLevel() <= event.getOldLevel())
+			return;
+
+		this.plugin.data.recordMaxStat(
+			"level",
+			event.getPlayer().getUniqueId(),
+			event.getNewLevel()
+		);
 	}
 
 }

@@ -17,6 +17,7 @@ public class StatUpdate {
 	public static final int VALUE = 2;
 	public static final int NAMED = 3;
 	public static final int PLAYER = 4;
+	public static final int MAX = 5;
 	
 	
 	public StatUpdate(int format, String table, UUID uuid, int amount, String world) {
@@ -31,6 +32,11 @@ public class StatUpdate {
 	
 	public StatUpdate(int format, String table, UUID uuid, String value) {
 		this(format, table, uuid, 1, "none", value, null);
+	}
+
+
+	public StatUpdate(int format, String table, UUID uuid, int amount) {
+		this(format, table, uuid, amount, "none", null, null);
 	}
 
 

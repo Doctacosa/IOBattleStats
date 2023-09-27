@@ -28,6 +28,7 @@ public class DataAccess implements Runnable {
 	private Map< BattleKey, Integer > deaths = new HashMap< BattleKey, Integer>();
 	
 	private Vector< StatUpdate > basicStats = new Vector< StatUpdate >();
+	private Vector< StatUpdate > maxStats = new Vector< StatUpdate >();
 
 	//The maximum length of item names to save
 	private static final int maxNameLength = 100;
@@ -446,6 +447,16 @@ public class DataAccess implements Runnable {
 			);
 			pstmt.executeUpdate();
 			
+			pstmt = conn.prepareStatement("" +
+				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "maxes` ( " +
+				"  `uuid` varchar(36) NOT NULL, " +
+				"  `value` varchar(20) NOT NULL, " +
+				"  `amount` int(11) NOT NULL, " +
+				"  PRIMARY KEY (`uuid`,`value`) " +
+				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
+			);
+			pstmt.executeUpdate();
+			
 		} catch (SQLException ex) {
 			Bukkit.getLogger().severe("Query: " + query);
 			Bukkit.getLogger().severe("SQLException: " + ex.getMessage());
@@ -514,6 +525,12 @@ public class DataAccess implements Runnable {
 	}
 	
 	
+	//Generic method to record a max stat in the generic table
+	public void recordMaxStat(String value, UUID uuid, int amount) {
+		maxStats.add(new StatUpdate(StatUpdate.MAX, value, uuid, amount));
+	}
+
+
 	//Record a player's name and UUID
 	public void recordPlayer(UUID uuid, String name, String ip) {
 		StatUpdate playerData = new StatUpdate(StatUpdate.PLAYER, "players", uuid, name);
@@ -543,14 +560,20 @@ public class DataAccess implements Runnable {
 		
 		//Copy the maps then clear them
 		Map< BattleKey, Float > damagesCopy = new HashMap< BattleKey, Float>();
-		Map< BattleKey, Integer > deathsCopy = new HashMap< BattleKey, Integer>();
-		Vector< StatUpdate > basicStatsCopy = new Vector< StatUpdate >();
 		damagesCopy.putAll(damages);
-		deathsCopy.putAll(deaths);
-		basicStatsCopy.addAll(basicStats);
 		damages.clear();
+
+		Map< BattleKey, Integer > deathsCopy = new HashMap< BattleKey, Integer>();
+		deathsCopy.putAll(deaths);
 		deaths.clear();
+
+		Vector< StatUpdate > basicStatsCopy = new Vector< StatUpdate >();
+		basicStatsCopy.addAll(basicStats);
 		basicStats.clear();
+
+		Vector< StatUpdate > maxStatsCopy = new Vector< StatUpdate >();
+		maxStatsCopy.addAll(maxStats);
+		maxStats.clear();
 		
 		Map< String, Integer > formats = new HashMap< String, Integer >();
 		
@@ -726,7 +749,25 @@ public class DataAccess implements Runnable {
 					int res = pstmt.executeUpdate();
 				}
 			}
+
+
+			//Max values
+			pstmt = conn.prepareStatement("" +
+					"INSERT INTO " + this.tablePrefix + "maxes (uuid, value, amount) " +
+					"VALUES (?, ?, ?) " +
+					"ON DUPLICATE KEY UPDATE ? = GREATEST(?, ?) ");
 			
+			for (StatUpdate entry: maxStatsCopy) {
+				pstmt.setString(1, entry.uuid.toString());
+				pstmt.setString(2, entry.table);
+				pstmt.setInt(3, entry.amount);
+				pstmt.setString(4, entry.table);
+				pstmt.setString(5, entry.table);
+				pstmt.setInt(6, entry.amount);
+				
+				@SuppressWarnings("unused")
+				int res = pstmt.executeUpdate();
+			}
 			
 			
 			pstmt.close();
