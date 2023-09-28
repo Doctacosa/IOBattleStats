@@ -328,7 +328,7 @@ public class BasicListener implements Listener {
 				this.plugin.data.recordItemStat(
 					"splashes",
 					player.getUniqueId(),
-					effect.getType().toString(),
+					effect.getType().getName(),
 					1,
 					player.getWorld().getName()
 				);

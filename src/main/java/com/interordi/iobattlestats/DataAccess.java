@@ -404,7 +404,7 @@ public class DataAccess implements Runnable {
 				"CREATE TABLE IF NOT EXISTS `" + this.tablePrefix + "splashes` ( " +
 				"  `uuid` varchar(36) NOT NULL, " +
 				"  `amount` int(11) NOT NULL, " +
-				"  `value` varchar(20) NOT NULL, " +
+				"  `value` varchar(50) NOT NULL, " +
 				"  `world` varchar(30) NOT NULL, " +
 				"  PRIMARY KEY (`uuid`,`value`,`world`) " +
 				") ENGINE=InnoDB DEFAULT CHARSET=latin1; "
@@ -735,7 +735,7 @@ public class DataAccess implements Runnable {
 			
 			if (plugin.tracker != null) {
 				//Kill streaks
-				query = "INSERT INTO " + this.tablePrefix + "pvp_streak (uuid, value)" + 
+				query = "INSERT INTO " + this.tablePrefix + "pvp_streak (uuid, value) " + 
 						"VALUES (?, ?) " +
 						"ON DUPLICATE KEY UPDATE value = ?";
 				pstmt = conn.prepareStatement(query);
@@ -755,15 +755,13 @@ public class DataAccess implements Runnable {
 			pstmt = conn.prepareStatement("" +
 					"INSERT INTO " + this.tablePrefix + "maxes (uuid, value, amount) " +
 					"VALUES (?, ?, ?) " +
-					"ON DUPLICATE KEY UPDATE ? = GREATEST(?, ?) ");
+					"ON DUPLICATE KEY UPDATE amount = GREATEST(?, amount) ");
 			
 			for (StatUpdate entry: maxStatsCopy) {
 				pstmt.setString(1, entry.uuid.toString());
 				pstmt.setString(2, entry.table);
 				pstmt.setInt(3, entry.amount);
-				pstmt.setString(4, entry.table);
-				pstmt.setString(5, entry.table);
-				pstmt.setInt(6, entry.amount);
+				pstmt.setInt(4, entry.amount);
 				
 				@SuppressWarnings("unused")
 				int res = pstmt.executeUpdate();
