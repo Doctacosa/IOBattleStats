@@ -1,5 +1,7 @@
 package com.interordi.iobattlestats.listeners;
 
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -245,10 +247,17 @@ public class BasicListener implements Listener {
 		if (!player.hasPermission("iobattlestats.track"))
 			return;
 
+		String value = "";
+		if (event.getProjectile() instanceof Arrow) {
+			boolean infinite = event.getBow().getItemMeta().getEnchantLevel(Enchantment.ARROW_INFINITE) > 0;
+			if (infinite)
+				value = "infinity";
+		}
+
 		this.plugin.data.recordItemStat(
 			"arrows",
 			player.getUniqueId(),
-			event.getProjectile().toString(),
+			value,
 			1,
 			player.getWorld().getName()
 		);
