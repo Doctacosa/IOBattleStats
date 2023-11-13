@@ -315,10 +315,14 @@ public class BasicListener implements Listener {
 		if (change <= 0)
 			return;
 
+		String source = "";
+		if (event.getItem() != null)
+			source = event.getItem().getType().toString();
+
 		this.plugin.data.recordItemStat(
 			"hunger_refills",
 			player.getUniqueId(),
-			event.getItem().getType().toString(),
+			source,
 			change,
 			player.getWorld().getName()
 		);
