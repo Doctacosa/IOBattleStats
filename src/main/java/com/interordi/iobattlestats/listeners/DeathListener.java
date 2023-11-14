@@ -72,16 +72,18 @@ public class DeathListener implements Listener {
 				
 				//Check the off hand, then the primary hand
 				ItemStack held = killer.getInventory().getItemInOffHand();
-				if (held != null && held.getItemMeta() != null && held.getItemMeta().hasDisplayName()) {
-					itemName = held.getItemMeta().getDisplayName();
+				if (held != null && held.getItemMeta() != null) {
 					cause = held.getType().toString();
+					if (held.getItemMeta() != null)
+						itemName = held.getItemMeta().getDisplayName();
 				}
 				
 				if (itemName == null || itemName.equals("")) {
 					held = killer.getInventory().getItemInMainHand();
-					if (held != null && held.getItemMeta() != null && held.getItemMeta().hasDisplayName()) {
-						itemName = held.getItemMeta().getDisplayName();
+					if (held != null && held.getItemMeta() != null) {
 						cause = held.getType().toString();
+						if (held.getItemMeta() != null)
+							itemName = held.getItemMeta().getDisplayName();
 					}
 				}
 				
