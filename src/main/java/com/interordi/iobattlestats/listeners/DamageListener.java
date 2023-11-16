@@ -1,6 +1,7 @@
 package com.interordi.iobattlestats.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -80,13 +81,11 @@ public class DamageListener implements Listener {
 				
 				//Check the main hand, then the off one
 				ItemStack held = ((Player)attacker).getInventory().getItemInMainHand();
-				if (held != null) {
+				if (held != null && held.getType() != Material.AIR) {
 					damageSource = held.getType().toString();
 					if (held.getItemMeta() != null)
 						weaponName = held.getItemMeta().getDisplayName();
-				}
-				
-				if (weaponName == null || weaponName.equals("")) {
+				} else {
 					held = ((Player)attacker).getInventory().getItemInOffHand();
 					if (held != null) {
 						damageSource = held.getType().toString();

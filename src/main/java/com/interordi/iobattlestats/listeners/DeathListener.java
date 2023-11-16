@@ -2,6 +2,7 @@ package com.interordi.iobattlestats.listeners;
 
 //import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -72,13 +73,11 @@ public class DeathListener implements Listener {
 				
 				//Check the main hand, then the off one
 				ItemStack held = killer.getInventory().getItemInMainHand();
-				if (held != null && held.getItemMeta() != null) {
+				if (held != null && held.getItemMeta() != null && held.getType() != Material.AIR) {
 					cause = held.getType().toString();
 					if (held.getItemMeta() != null)
 						itemName = held.getItemMeta().getDisplayName();
-				}
-				
-				if (itemName == null || itemName.equals("")) {
+				} else {
 					held = killer.getInventory().getItemInOffHand();
 					if (held != null && held.getItemMeta() != null) {
 						cause = held.getType().toString();
@@ -137,13 +136,11 @@ public class DeathListener implements Listener {
 			
 			//Check the main hand, then the off one
 			ItemStack held = killer.getInventory().getItemInMainHand();
-			if (held != null) {
+			if (held != null && held.getItemMeta() != null && held.getType() != Material.AIR) {
 				cause = held.getType().toString();
 				if (held.getItemMeta() != null && held.getItemMeta().hasDisplayName())
 					itemName = held.getItemMeta().getDisplayName();
-			}
-			
-			if (itemName == null || itemName.equals("")) {
+			} else {
 				held = killer.getInventory().getItemInOffHand();
 				if (held != null) {
 					cause = held.getType().toString();
