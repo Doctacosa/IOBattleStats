@@ -78,8 +78,8 @@ public class DamageListener implements Listener {
 			//Get the weapon's name if one was used
 			if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK || event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
 				
-				//Check the off hand, then the main one
-				ItemStack held = ((Player)attacker).getInventory().getItemInOffHand();
+				//Check the main hand, then the off one
+				ItemStack held = ((Player)attacker).getInventory().getItemInMainHand();
 				if (held != null) {
 					damageSource = held.getType().toString();
 					if (held.getItemMeta() != null)
@@ -87,7 +87,7 @@ public class DamageListener implements Listener {
 				}
 				
 				if (weaponName == null || weaponName.equals("")) {
-					held = ((Player)attacker).getInventory().getItemInMainHand();
+					held = ((Player)attacker).getInventory().getItemInOffHand();
 					if (held != null) {
 						damageSource = held.getType().toString();
 						if (held.getItemMeta() != null)

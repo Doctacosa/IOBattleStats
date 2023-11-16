@@ -70,8 +70,8 @@ public class DeathListener implements Listener {
 				String cause = event.getEntity().getLastDamageCause().getCause().toString();
 				String itemName = "";
 				
-				//Check the off hand, then the primary hand
-				ItemStack held = killer.getInventory().getItemInOffHand();
+				//Check the main hand, then the off one
+				ItemStack held = killer.getInventory().getItemInMainHand();
 				if (held != null && held.getItemMeta() != null) {
 					cause = held.getType().toString();
 					if (held.getItemMeta() != null)
@@ -79,7 +79,7 @@ public class DeathListener implements Listener {
 				}
 				
 				if (itemName == null || itemName.equals("")) {
-					held = killer.getInventory().getItemInMainHand();
+					held = killer.getInventory().getItemInOffHand();
 					if (held != null && held.getItemMeta() != null) {
 						cause = held.getType().toString();
 						if (held.getItemMeta() != null)
@@ -135,8 +135,8 @@ public class DeathListener implements Listener {
 			//To add to drops, only works if keepInventory is disabled
 			//event.getDrops().add(head);
 			
-			//Check the off hand, then the primary hand
-			ItemStack held = killer.getInventory().getItemInOffHand();
+			//Check the main hand, then the off one
+			ItemStack held = killer.getInventory().getItemInMainHand();
 			if (held != null) {
 				cause = held.getType().toString();
 				if (held.getItemMeta() != null && held.getItemMeta().hasDisplayName())
@@ -144,7 +144,7 @@ public class DeathListener implements Listener {
 			}
 			
 			if (itemName == null || itemName.equals("")) {
-				held = killer.getInventory().getItemInMainHand();
+				held = killer.getInventory().getItemInOffHand();
 				if (held != null) {
 					cause = held.getType().toString();
 					if (held.getItemMeta() != null && held.getItemMeta().hasDisplayName())
