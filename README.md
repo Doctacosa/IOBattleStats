@@ -27,6 +27,8 @@ For example, the more complex stats_io_deaths:
 `player_source`: if the player was the cause of the death  
 `player_target`: if it was a player that died  
 
+`stats_io_maxes` has a slightly different format: it will store the maximum value of various stats for each player.
+
 
 ## Database tables and tracked values
 
@@ -46,15 +48,25 @@ All table names are prefixed with `stats_io_` to avoid naming conflicts with oth
 `damage`  
 `deaths`  
 `eggs_thrown`  
+`enchants`  
+`enderpearls`  
 `fish_caught`  
+`heals`  
+`hunger_refills`  
+`inventories`  
 `item_broken`  
 `item_dropped`  
 `item_picked_up`  
 `joins`  
 `kicks`  
+`lighters`  
+`maxes`  
+`milk`  
 `move`  
 `pvp_streak`  
 `shears`  
+`splashes`  
+`tamings`  
 `teleports`  
 `trades`  
 `xp_gained`  
