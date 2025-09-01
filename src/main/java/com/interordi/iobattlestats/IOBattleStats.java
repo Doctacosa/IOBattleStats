@@ -186,12 +186,7 @@ public class IOBattleStats extends JavaPlugin {
 				return true;
 			}
 
-			headOf = Bukkit.getServer().getPlayer(targetName);
-			if (headOf != null)
-				targetName = headOf.getDisplayName();
-			
-			Heads.giveToPlayer(Bukkit.getOfflinePlayer(targetName), giveTo, amount);
-			
+			Heads.giveToPlayer(this, targetName, giveTo, amount);
 			return true;
 		}
 		
