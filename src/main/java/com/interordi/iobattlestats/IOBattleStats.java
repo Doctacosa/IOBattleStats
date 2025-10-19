@@ -1,5 +1,6 @@
 package com.interordi.iobattlestats;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -81,6 +82,10 @@ public class IOBattleStats extends JavaPlugin {
 		
 		getServer().getScheduler().runTaskTimerAsynchronously(this, data, 60*20L, 60*20L);	//Run every minute
 		
+		//Enable metrics
+		@SuppressWarnings("unused")
+		Metrics metrics = new Metrics(this, 27485);
+
 		getLogger().info("IOBattleStats enabled");
 	}
 	
