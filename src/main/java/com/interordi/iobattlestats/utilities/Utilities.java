@@ -22,7 +22,6 @@ import org.bukkit.entity.WitherSkull;
 public class Utilities {
 
 	public static String getDamagerType(Entity damager) {
-		System.out.println("getDamagerType()");
 		String cause = "";
 		
 		if (damager instanceof Arrow)
