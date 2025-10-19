@@ -84,7 +84,7 @@ public class PlayerInteractionsListener implements Listener {
 
 		//Cow milking
 		if (target.getType() == EntityType.COW ||
-			target.getType() == EntityType.MUSHROOM_COW) {
+			target.getType() == EntityType.MOOSHROOM) {
 			if (mainHand.getType() == Material.BUCKET ||
 				offHand.getType() == Material.BUCKET) {
 

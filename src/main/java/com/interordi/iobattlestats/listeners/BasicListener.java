@@ -249,7 +249,7 @@ public class BasicListener implements Listener {
 
 		String value = "";
 		if (event.getProjectile() instanceof Arrow) {
-			boolean infinite = event.getBow().getItemMeta().getEnchantLevel(Enchantment.ARROW_INFINITE) > 0;
+			boolean infinite = event.getBow().getItemMeta().getEnchantLevel(Enchantment.INFINITY) > 0;
 			if (infinite)
 				value = "infinity";
 		}
