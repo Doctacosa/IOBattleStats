@@ -1,28 +1,28 @@
 package com.interordi.iobattlestats.utilities;
 
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 //import org.bukkit.entity.Fish;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.LargeFireball;
-import org.bukkit.entity.LingeringPotion;
 import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.entity.SmallFireball;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.SpectralArrow;
-import org.bukkit.entity.SplashPotion;
 import org.bukkit.entity.ThrownExpBottle;
 import org.bukkit.entity.ThrownPotion;
-import org.bukkit.entity.TippedArrow;
 import org.bukkit.entity.WitherSkull;
 
 public class Utilities {
 
 	public static String getDamagerType(Entity damager) {
+		System.out.println("getDamagerType()");
 		String cause = "";
 		
 		if (damager instanceof Arrow)
@@ -43,8 +43,6 @@ public class Utilities {
 			cause = ((FishHook)damager).getType().toString();
 		else if (damager instanceof LargeFireball)
 			cause = ((LargeFireball)damager).getType().toString();
-		else if (damager instanceof LingeringPotion)
-			cause = ((LingeringPotion)damager).getType().toString();
 		/*
 		else if (damager instanceof LlamaSpit)
 			cause = ((LlamaSpit)damager).getType().toString();
@@ -57,16 +55,23 @@ public class Utilities {
 			cause = ((Snowball)damager).getType().toString();
 		else if (damager instanceof SpectralArrow)
 			cause = ((SpectralArrow)damager).getType().toString();
-		else if (damager instanceof SplashPotion)
-			cause = ((SplashPotion)damager).getType().toString();
 		else if (damager instanceof ThrownExpBottle)
 			cause = ((ThrownExpBottle)damager).getType().toString();
 		else if (damager instanceof ThrownPotion)
 			cause = ((ThrownPotion)damager).getType().toString();
-		else if (damager instanceof TippedArrow)
-			cause = ((TippedArrow)damager).getType().toString();
 		else if (damager instanceof WitherSkull)
 			cause = ((WitherSkull)damager).getType().toString();
+
+		//Potions - guaranteed projectiles, so we can safely assume splash potion
+		if (damager.getType() == EntityType.POTION) {
+			ThrownPotion potion = (ThrownPotion)damager;
+			cause = potion.getItem().getType().toString();
+		}
+		if (damager.getType() == EntityType.AREA_EFFECT_CLOUD) {
+			@SuppressWarnings("unused")
+			AreaEffectCloud cloud = (AreaEffectCloud)damager;
+			cause = "LINGERING_POTION";
+		}
 		
 		return cause;
 
